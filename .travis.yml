@@ -1,0 +1,13 @@
+# https://travis-ci.com/marmelab/quarto-isomorphic
+
+language: node_js
+
+node_js:
+    - "node"
+
+install:
+  - make install
+
+script:
+  - make lint
+  - make test
