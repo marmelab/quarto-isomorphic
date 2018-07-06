@@ -1,0 +1,51 @@
+{
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jest": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:react/recommended",
+        "plugin:react-native/all",
+        "prettier",
+        "prettier/react"
+    ],
+    "plugins": [
+        "react",
+        "prettier"
+    ],
+    "rules": {
+        "prettier/prettier": [
+            "error",
+            {
+                "singleQuote": true,
+                "tabWidth": 4,
+                "trailingComma": "all"
+            }
+        ],
+        "no-console": [
+            "error",
+            {
+                "allow": [
+                    "warn",
+                    "error"
+                ]
+            }
+        ],
+        "react-native/split-platform-components": 0,
+        "no-unused-vars": [
+            "error",
+            {
+                "ignoreRestSiblings": true
+            }
+        ]
+    },
+    "ecmaFeatures": {
+        "jsx": true
+      }
+}
