@@ -12,17 +12,10 @@ const Game = props => (
         {props.game.grid ? (
             <div>
                 <span>{props.game.idGame}</span>
-                <Grid
-                    onPress={this.handleGridPress}
-                    grid={props.game.grid}
-                    goodPlaces={props.game.winningPlaces}
-                    winningLine={props.game.winningLine}
-                    readOnly={props.game.locked}
-                    activeZone={props.game.selectedPiece > 0}
-                />
+                <Grid />
                 {props.game.locked &&
                     !props.game.closed &&
-                    !props.game.watch_only && <span>Wait your turn</span>}
+                    !props.game.watch_only && <span>Wait for your turn</span>}
                 {props.game.closed && (
                     <div>
                         <div />
@@ -30,19 +23,7 @@ const Game = props => (
                     </div>
                 )}
                 <span>Do something</span>
-                <RemainingList
-                    onPress={this.handleRemainingListPress}
-                    list={props.game.allPieces}
-                    selectedPiece={props.game.selectedPiece}
-                    badPieces={
-                        props.game.winningLine.length == 0 &&
-                        props.game.selectedPiece == 0
-                            ? props.game.winningPieces
-                            : []
-                    }
-                    readOnly={props.game.locked}
-                    activeZone={props.game.selectedPiece === 0}
-                />
+                <RemainingList />
             </div>
         ) : (
             props.loaded || (
