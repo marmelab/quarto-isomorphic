@@ -12,7 +12,13 @@ const Game = props => (
         {props.game.grid ? (
             <div>
                 <span>{props.game.idGame}</span>
-                <Grid />
+                <Grid
+                    grid={props.game.grid}
+                    goodPlaces={props.game.winningPlaces}
+                    winningLine={props.game.winningLine}
+                    readOnly={props.game.locked}
+                    activeZone={props.game.selectedPiece > 0}
+                />
                 {props.game.locked &&
                     !props.game.closed &&
                     !props.game.watch_only && (
