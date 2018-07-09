@@ -11,10 +11,6 @@ class HomeQuarto extends React.Component {
                     <img src="/static/boardTitle.jpg" alt="logo" />
                     <h2>Welcome to Quarto-isomorphic</h2>
                 </div>
-                <p>
-                    For now, you can’t do nothing, but you should watch games
-                    soon
-                </p>
                 <Link href="/game/Game">
                     <StyledButton>Watch a game</StyledButton>
                 </Link>
