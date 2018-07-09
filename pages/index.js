@@ -1,20 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
-import { bodyStyle } from './styles/GlobalStyles';
-import { StyledButton } from './globalComponents/StyledButton';
+import Button from './ui/Button';
+import Container from './ui/Container';
 
 class HomeQuarto extends React.Component {
     render() {
         return (
-            <div className={bodyStyle}>
+            <Container>
                 <div>
                     <img src="/static/boardTitle.jpg" alt="logo" />
                     <h2>Welcome to Quarto-isomorphic</h2>
                 </div>
                 <Link href="/game/Game">
-                    <StyledButton>Watch a game</StyledButton>
+                    <Button>Watch a game</Button>
                 </Link>
-            </div>
+            </Container>
         );
     }
 }
