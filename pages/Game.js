@@ -15,7 +15,9 @@ const Game = props => (
                 <Grid />
                 {props.game.locked &&
                     !props.game.closed &&
-                    !props.game.watch_only && <span>Wait for your turn</span>}
+                    !props.game.watch_only && (
+                        <span>Wait for your own turn</span>
+                    )}
                 {props.game.closed && (
                     <div>
                         <div />
