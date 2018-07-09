@@ -34,6 +34,7 @@
     "razzle": "2.2.0",
     "react": "16.4.1",
     "react-dom": "16.4.1",
+    "react-jss": "^8.6.1",
     "react-router-dom": "4.3.1"
   }
 }
