@@ -1,6 +1,5 @@
 import React from 'react';
 import Grid from './Grid';
-//import '../styles.css';
 
 class Game extends React.Component {
   render() {

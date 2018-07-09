@@ -1,11 +1,11 @@
 import React from 'react';
 import Link from 'next/link'
-import injectSheet from 'react-jss'
+import styled, { css } from 'react-emotion'
 
 class HomeQuarto extends React.Component {
   render() {
     return (
-      <div className={classes.myButton}>
+      <div className={myStyle}>
         <div>
           <img src='/static/boardTitle.jpg' alt="logo" />
           <h2>Welcome to Quarto-isomorphic</h2>
@@ -24,26 +24,10 @@ class HomeQuarto extends React.Component {
   }
 }
 
-//const StyledButton = injectSheet(styles)(Button)
+const myStyle = css`
+  color: darkblue;
+`
 
-const styles = {
-  myButton: {
-    color: 'green',
-    margin: {
-      // jss-expand gives more readable syntax
-      top: 5, // jss-default-unit makes this 5px
-      right: 0,
-      bottom: 0,
-      left: '1rem'
-    },
-    '& span': {
-      // jss-nested applies this to a child span
-      fontWeight: 'bold' // jss-camel-case turns this into 'font-weight'
-    }
-  },
-  myLabel: {
-    fontStyle: 'italic'
-  }
-}
+export default HomeQuarto;
 
-export default injectSheet(styles)(HomeQuarto);
+
