@@ -11,7 +11,6 @@
         "plugin:import/errors",
         "plugin:import/warnings",
         "plugin:react/recommended",
-        "plugin:react-native/all",
         "prettier",
         "prettier/react"
     ],
@@ -37,7 +36,6 @@
                 ]
             }
         ],
-        "react-native/split-platform-components": 0,
         "no-unused-vars": [
             "error",
             {
