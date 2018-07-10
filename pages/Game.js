@@ -34,15 +34,6 @@ class Game extends React.Component {
 
     componentDidMount = async () => {
         this.setState(this.props);
-        /* const idgame = { true: 479, false: 480 };
-        let i = true;
-        this.interval = setInterval(async () => {
-            let url = `http://${config.apiUrl}/${idgame[i]}`;
-            const res = await fetch(url);
-            const data = await res.json();
-            this.handleMessage(data);
-            i = !i;
-        }, 3000); */
         this.socket = io();
         this.socket.on('game', this.handleGame);
     };
@@ -54,14 +45,11 @@ class Game extends React.Component {
     };
 
     handleGame = game => {
-        console.log('handleGame');
-        console.log(game.idGame);
-        this.setState({ game: game });
+        this.setState({ game: JSON.parse(game) });
     };
 
     render() {
         const { game, loaded } = this.state;
-        console.log(game.idGame);
         return (
             <Container>
                 {game.grid ? (
