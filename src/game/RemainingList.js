@@ -7,6 +7,7 @@ const ListContainer = styled('div')`
     display: flex;
     flex-direction: raw;
     justify-content: center;
+    flex-wrap: wrap;
 `;
 
 const RemainingList = props => (

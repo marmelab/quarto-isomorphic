@@ -1,6 +1,7 @@
 import React from 'react';
 import Grid from '../src/game/Grid';
 import RemainingList from '../src/game/RemainingList';
+import ActionText from '../src/game/ActionText';
 import Link from 'next/link';
 import Button from '../src/ui/Button';
 import Container from '../src/ui/Container';
@@ -8,6 +9,11 @@ import config from '../config/config.dist';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
 import io from 'socket.io-client';
+import styled from 'react-emotion';
+
+const BoardContainer = styled('div')`
+    height: 500px;
+`;
 
 class Game extends React.Component {
     state = {
@@ -53,7 +59,7 @@ class Game extends React.Component {
         return (
             <Container>
                 {game.grid ? (
-                    <div>
+                    <BoardContainer>
                         <span>{game.idGame}</span>
                         <Grid
                             grid={game.grid}
@@ -62,18 +68,12 @@ class Game extends React.Component {
                             readOnly={game.locked}
                             activeZone={game.selectedPiece > 0}
                         />
-                        {game.locked &&
-                            !game.closed &&
-                            !game.watch_only && (
-                                <span>Wait for your own turn</span>
-                            )}
-                        {game.closed && (
-                            <div>
-                                <div />
-                                <span>End of game</span>
-                            </div>
-                        )}
-                        <span>Do something</span>
+                        <ActionText
+                            closed={game.closed}
+                            locked={game.locked}
+                            selectedPiece={game.selectedPiece}
+                            watchOnly={game.watch_only}
+                        />
                         <RemainingList
                             list={game.allPieces}
                             selectedPiece={game.selectedPiece}
@@ -86,13 +86,13 @@ class Game extends React.Component {
                             readOnly={game.locked}
                             activeZone={game.selectedPiece === 0}
                         />
-                    </div>
+                    </BoardContainer>
                 ) : (
                     loaded || (
-                        <div>
+                        <BoardContainer>
                             <span>Game not found !</span>
                             <span>Go choose another</span>
-                        </div>
+                        </BoardContainer>
                     )
                 )}
                 <Link href="/">
