@@ -9,7 +9,6 @@ const Button = styled('button')`
     border-radius: 3px;
     font: normal medium/normal Arial, Helvetica, sans-serif;
     color: rgba(255, 255, 255, 0.9);
-    -o-text-overflow: clip;
     text-overflow: clip;
     background: #0199d9;
     box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2);
