@@ -74,7 +74,18 @@ class Game extends React.Component {
                             </div>
                         )}
                         <span>Do something</span>
-                        <RemainingList />
+                        <RemainingList
+                            list={game.allPieces}
+                            selectedPiece={game.selectedPiece}
+                            badPieces={
+                                game.winningLine.length == 0 &&
+                                game.selectedPiece == 0
+                                    ? game.winningPieces
+                                    : []
+                            }
+                            readOnly={game.locked}
+                            activeZone={game.selectedPiece === 0}
+                        />
                     </div>
                 ) : (
                     loaded || (

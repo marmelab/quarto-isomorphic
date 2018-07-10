@@ -1,11 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'react-emotion';
 import GridBox from './GridBox';
 
+const GridContainer = styled('div')`
+    display: flex;
+    flex-direction: column;
+`;
+
+const RowContainer = styled('div')`
+    display: flex;
+    flex-direction: raw;
+    justify-content: center;
+`;
+
 const Grid = props => (
-    <div>
+    <GridContainer>
         {props.grid.map((row, rowKey) => (
-            <div key={rowKey}>
+            <RowContainer key={rowKey}>
                 {row.map((boxValue, boxKey) => (
                     <GridBox
                         key={boxKey}
@@ -22,9 +34,9 @@ const Grid = props => (
                         )}
                     />
                 ))}
-            </div>
+            </RowContainer>
         ))}
-    </div>
+    </GridContainer>
 );
 
 const positionInclude = (placesList, x, y) => {
