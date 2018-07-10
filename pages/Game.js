@@ -45,7 +45,6 @@ class Game extends React.Component {
     };
 
     componentWillUnmount = async () => {
-        //clearInterval(this.interval);
         this.socket.off('game', this.handleGame);
         this.socket.close();
     };
