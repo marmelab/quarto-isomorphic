@@ -6,9 +6,17 @@ import { renderToString } from 'react-dom/server';
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
-const server = express();
-server
-    .disable('x-powered-by')
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+io.on('connection', socket => {
+    socket.on('message', data => {
+        socket.broadcast.emit('game', data);
+    });
+});
+
+app.disable('x-powered-by')
     .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
     .get('/*', (req, res) => {
         const context = {};
@@ -50,4 +58,4 @@ server
         }
     });
 
-export default server;
+export default app;
