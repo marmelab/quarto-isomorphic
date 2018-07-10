@@ -43,7 +43,7 @@ class Game extends React.Component {
             this.handleMessage(data);
             i = !i;
         }, 3000); */
-        this.socket = io('http://localhost:3000/');
+        this.socket = io();
         this.socket.on('game', this.handleGame);
     };
 
@@ -54,11 +54,14 @@ class Game extends React.Component {
     };
 
     handleGame = game => {
+        console.log('handleGame');
+        console.log(game.idGame);
         this.setState({ game: game });
     };
 
     render() {
         const { game, loaded } = this.state;
+        console.log(game.idGame);
         return (
             <Container>
                 {game.grid ? (
