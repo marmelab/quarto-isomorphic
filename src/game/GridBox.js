@@ -9,6 +9,7 @@ const GridBox = props => (
         label={'gridbox_x' + String(props.x) + '_y' + String(props.y)}
         winningBox={props.winningBox}
         goodBox={props.goodPlace}
+        boxSize="60"
     />
 );
 
