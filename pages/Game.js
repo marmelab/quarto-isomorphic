@@ -6,6 +6,7 @@ import Button from '../src/ui/Button';
 import Container from '../src/ui/Container';
 import config from '../config/config.dist';
 import PropTypes from 'prop-types';
+import 'isomorphic-fetch';
 
 const Game = props => (
     <Container>
