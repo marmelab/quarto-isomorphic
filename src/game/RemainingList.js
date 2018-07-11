@@ -39,7 +39,6 @@ RemainingList.defaultProps = {
 };
 
 RemainingList.propTypes = {
-    onPress: PropTypes.func.isRequired,
     list: PropTypes.object.isRequired,
     readOnly: PropTypes.bool,
     selectedPiece: PropTypes.number,

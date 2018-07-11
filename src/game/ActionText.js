@@ -38,7 +38,7 @@ const getActionText = props => {
         }
         return 'Choose a piece for your opponent';
     }
-    if (props.watch_only) {
+    if (props.watchOnly) {
         return '(Watch only) Admire competitors talent';
     }
     return 'Meditate while waiting for your turn';

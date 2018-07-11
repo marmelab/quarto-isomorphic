@@ -20,7 +20,6 @@ GridBox.defaultProps = {
 GridBox.propTypes = {
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
-    onPress: PropTypes.func.isRequired,
     boxValue: PropTypes.string.isRequired,
     enabled: PropTypes.bool,
     clickable: PropTypes.bool,

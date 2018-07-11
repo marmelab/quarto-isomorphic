@@ -18,7 +18,6 @@ RemainingBox.defaultProps = {
 };
 
 RemainingBox.propTypes = {
-    onPress: PropTypes.func.isRequired,
     boxValue: PropTypes.string.isRequired,
     enabled: PropTypes.bool,
     clickable: PropTypes.bool,

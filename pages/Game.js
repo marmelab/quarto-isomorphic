@@ -27,7 +27,7 @@ class Game extends Component {
     };
 
     static async getInitialProps() {
-        const url = `http://${config.apiUrl}/479`;
+        const url = `http://${config.apiUrl}/488`;
 
         const res = await fetch(url);
         const data = await res.json();
@@ -41,11 +41,12 @@ class Game extends Component {
     componentDidMount = async () => {
         this.setState(this.props);
         this.socket = io();
-        this.socket.on('game', this.handleGame);
+        this.socket.on(`game${this.props.game.idGame}`, this.handleGame);
+        this.socket.emit('listenGame', { id: this.props.game.idGame });
     };
 
     componentWillUnmount = async () => {
-        this.socket.off('game', this.handleGame);
+        this.socket.off(`game${this.props.game.idGame}`, this.handleGame);
         this.socket.close();
     };
 
@@ -71,7 +72,7 @@ class Game extends Component {
                             closed={game.closed}
                             locked={game.locked}
                             selectedPiece={game.selectedPiece}
-                            watchOnly={game.watch_only}
+                            watchOnly={!!game.watch_only}
                         />
                         <RemainingList
                             list={game.allPieces}

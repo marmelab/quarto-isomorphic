@@ -4,13 +4,13 @@ import styled from 'react-emotion';
 
 const BoxContainer = styled('div')(
     {
-        backgroundColor: 'lightblue',
         margin: '2px',
         padding: '2px',
     },
     props => ({
         height: props.boxSize,
         width: props.boxSize,
+        backgroundColor: props.selected ? '#80ffbf' : 'lightblue',
     }),
 );
 
@@ -24,6 +24,7 @@ const Box = props => (
         accessible={true}
         accessibilityLabel={props.label}
         boxSize={props.boxSize}
+        selected={props.selected}
     >
         {props.boxValue == '.' || (
             <ImgContainer
@@ -47,7 +48,7 @@ Box.propTypes = {
     winningBox: PropTypes.bool,
     badBox: PropTypes.bool,
     goodBox: PropTypes.bool,
-    boxSize: PropTypes.number.isRequired,
+    boxSize: PropTypes.string.isRequired,
 };
 
 export default Box;
