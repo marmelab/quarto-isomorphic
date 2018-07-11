@@ -1,6 +1,8 @@
 const config = { apiUrl: 'localhost/gameapi' };
 
-const app = require('express')();
+import express from 'express';
+
+const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const next = require('next');
@@ -10,12 +12,14 @@ const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-const request = require('request');
+//const request = require('request');
+
+import request from 'request';
 
 io.on('connection', socket => {
     const idgame = { true: 479, false: 480 };
     let i = true;
-    this.interval = setInterval(async () => {
+    setInterval(async () => {
         let url = `http://${config.apiUrl}/${idgame[i]}`;
         request(url, function(error, response, body) {
             if (!error && response.statusCode == 200) {
@@ -24,12 +28,12 @@ io.on('connection', socket => {
         });
         i = !i;
     }, 3000);
-    console.log('user connected');
+    console.log('user connected');// eslint-disable-line
     socket.on('game', data => {
         socket.broadcast.emit('game', data);
     });
     socket.on('disconnect', function() {
-        console.log('user disconnected');
+        console.log('user disconnected');// eslint-disable-line
     });
 });
 
@@ -40,6 +44,6 @@ nextApp.prepare().then(() => {
 
     server.listen(port, err => {
         if (err) throw err;
-        console.log(`> Ready on http://localhost:${port}`);
+        console.log(`> Ready on http://localhost:${port}`);// eslint-disable-line
     });
 });
