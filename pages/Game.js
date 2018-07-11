@@ -27,7 +27,7 @@ class Game extends Component {
     };
 
     static async getInitialProps() {
-        const url = `http://${config.apiUrl}/488`;
+        const url = `http://${config.apiUrl}/490`;
 
         const res = await fetch(url);
         const data = await res.json();

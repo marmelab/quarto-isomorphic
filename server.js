@@ -40,12 +40,14 @@ const setIntervalForListenedGame = (socket, idGame) => {
 };
 
 const unsetIntervalForListenedGame = (socket, idGame) => {
-    var index = gameListeners[idGame].indexOf(socket);
-    if (index > -1) {
-        gameListeners[idGame].splice(index, 1);
+    if (gameListeners[idGame]) {
+        let index = gameListeners[idGame].indexOf(socket);
+        if (index > -1) {
+            gameListeners[idGame].splice(index, 1);
+        }
     }
 
-    if (gameListeners[idGame].length === 0) {
+    if (!gameListeners[idGame] || gameListeners[idGame].length === 0) {
         clearInterval(listenedGame[idGame]);
         listenedGame[idGame] = undefined;
     }
