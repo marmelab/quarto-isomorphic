@@ -7,7 +7,9 @@ const RemainingBox = props => (
         boxSize="40"
         enabled={props.enabled}
         boxValue={props.boxValue}
-        label="remainingbox"
+        label={`remainingbox_${props.boxValue}${
+            props.selected ? '_selected' : ''
+        }`}
         selected={props.selected}
         badBox={props.badPiece}
     />

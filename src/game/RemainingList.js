@@ -11,7 +11,7 @@ const ListContainer = styled('div')`
 `;
 
 const RemainingList = props => (
-    <ListContainer className="RemainingList">
+    <ListContainer>
         {Object.keys(props.list).map(pieceKey => {
             if (!props.list[pieceKey].used) {
                 return (

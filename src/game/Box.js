@@ -21,8 +21,8 @@ const ImgContainer = styled('img')`
 
 const Box = props => (
     <BoxContainer
-        accessible={true}
-        accessibilityLabel={props.label}
+        aria-label={props.label}
+        aria-required="true"
         boxSize={props.boxSize}
         selected={props.selected}
     >
@@ -40,7 +40,6 @@ Box.defaultProps = {
 };
 
 Box.propTypes = {
-    classname: PropTypes.string,
     boxValue: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     enabled: PropTypes.bool,

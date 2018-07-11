@@ -6,7 +6,7 @@ const GridBox = props => (
     <Box
         enabled={props.enabled}
         boxValue={props.boxValue}
-        label={`gridbox_x${props.x}_y${props.y}`}
+        label={`gridbox_${props.boxValue}_x${props.x}_y${props.y}`}
         winningBox={props.winningBox}
         goodBox={props.goodPlace}
         boxSize="60"
