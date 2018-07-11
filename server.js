@@ -1,8 +1,9 @@
 const config = { apiUrl: 'localhost/gameapi' };
 
-import express from 'express';
+//import express from 'express';
 
-const app = express();
+//const app = express();
+const app = require('express')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const next = require('next');
@@ -12,9 +13,9 @@ const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-//const request = require('request');
+const request = require('request');
 
-import request from 'request';
+//import request from 'request';
 
 io.on('connection', socket => {
     const idgame = { true: 479, false: 480 };

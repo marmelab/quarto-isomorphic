@@ -3,8 +3,7 @@ import React from 'react';
 
 export default class MyDocument extends Document {
     static async getInitialProps(ctx) {
-        const initialProps = await Document.getInitialProps(ctx);
-        return { ...initialProps };
+        return { ...(await Document.getInitialProps(ctx)) };
     }
 
     render() {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Grid from '../src/game/Grid';
 import RemainingList from '../src/game/RemainingList';
 import ActionText from '../src/game/ActionText';
@@ -15,7 +15,7 @@ const BoardContainer = styled('div')`
     height: 500px;
 `;
 
-class Game extends React.Component {
+class Game extends Component {
     state = {
         game: {},
         loaded: false,
@@ -27,20 +27,20 @@ class Game extends React.Component {
     };
 
     static async getInitialProps() {
-        let url = `http://${config.apiUrl}/479`;
+        const url = `http://${config.apiUrl}/479`;
 
         const res = await fetch(url);
         const data = await res.json();
 
         return {
             game: data,
-            loaded: data.grid ? true : false,
+            loaded: !!data.grid,
         };
     }
 
     componentDidMount = async () => {
         this.setState(this.props);
-        this.socket = io('http://localhost/');
+        this.socket = io();
         this.socket.on('game', this.handleGame);
     };
 
