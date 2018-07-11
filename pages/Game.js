@@ -40,7 +40,7 @@ class Game extends React.Component {
 
     componentDidMount = async () => {
         this.setState(this.props);
-        this.socket = io();
+        this.socket = io('http://localhost/');
         this.socket.on('game', this.handleGame);
     };
 

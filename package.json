@@ -6,7 +6,7 @@
     "dev": "next",
     "build": "next build",
     "test": "razzle test --env=jsdom",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node --require babel-register server.js"
   },
   "devDependencies": {
     "babel-eslint": "8.2.5",
@@ -27,6 +27,9 @@
   },
   "dependencies": {
     "babel-plugin-emotion": "9.2.5",
+    "babel-preset-env": "1.7.0",
+    "babel-preset-stage-2": "6.24.1",
+    "babel-register": "6.26.0",
     "emotion": "9.2.5",
     "express": "4.16.3",
     "isomorphic-unfetch": "2.0.0",
