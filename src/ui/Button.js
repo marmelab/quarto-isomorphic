@@ -2,6 +2,8 @@ import styled from 'react-emotion';
 
 const Button = styled('button')`
     display: inline-block;
+    min-height: 20px;
+    margin: 4px;
     box-sizing: content-box;
     cursor: pointer;
     padding: 10px 20px;

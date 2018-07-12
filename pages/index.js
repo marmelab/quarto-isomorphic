@@ -1,18 +1,37 @@
-import React from 'react';
-import Link from 'next/link';
-import Button from '../src/ui/Button';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import GameList from '../src/list/GameList';
 import Container from '../src/ui/Container';
+import { listGames } from '../src/services/gameservice';
 
-const HomeQuarto = () => (
-    <Container>
-        <div>
-            <img src="/static/boardTitle.jpg" alt="logo" />
-            <h2>Welcome to Quarto-isomorphic</h2>
-        </div>
-        <Link href="/Game">
-            <Button>Watch a game</Button>
-        </Link>
-    </Container>
-);
+class HomeQuarto extends Component {
+    static propTypes = {
+        list: PropTypes.array.isRequired,
+        loaded: PropTypes.bool,
+    };
+
+    static async getInitialProps() {
+        const list = await listGames('onlywatch');
+        return {
+            list: list,
+            loaded: !!list,
+        };
+    }
+
+    render() {
+        const { list } = this.props;
+        return (
+            <Container>
+                <div>
+                    <img src="/static/boardTitle.jpg" alt="logo" />
+                    <h2>Welcome to Quarto-isomorphic</h2>
+                </div>
+                <div>
+                    <GameList list={list} />
+                </div>
+            </Container>
+        );
+    }
+}
 
 export default HomeQuarto;

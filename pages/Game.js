@@ -24,12 +24,14 @@ class Game extends Component {
     };
 
     static propTypes = {
+        idGame: PropTypes.number.isRequired,
         game: PropTypes.object.isRequired,
         loaded: PropTypes.bool,
     };
 
-    static async getInitialProps() {
-        const game = await getGame(547);
+    static async getInitialProps(props) {
+        const game = await getGame(props.query.idGame);
+
         return {
             game: game,
             loaded: !!game.grid,
