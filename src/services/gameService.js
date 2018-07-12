@@ -18,12 +18,12 @@ export const newGame = numberOfPlayers => {
         //method,
         //headers,
     })
-        .then(handleErrors)
         .then(res => res.json())
         .then(res => {
             //storeGameToken(res.idGame, res.tokenPlayerOne);
             return res;
-        });
+        })
+        .catch(logError);
 };
 
 export const getGame = async idGame => {
@@ -50,8 +50,8 @@ export const placePiece = async (idGame, x, y) => {
         //method,
         //headers,
     })
-        .then(handleErrors)
-        .then(res => res.json());
+        .then(res => res.json())
+        .catch(logError);
 };
 
 export const selectPiece = async (idGame, piece) => {
@@ -64,6 +64,6 @@ export const selectPiece = async (idGame, piece) => {
         //method,
         //headers,
     })
-        .then(handleErrors)
-        .then(res => res.json());
+        .then(res => res.json())
+        .catch(logError);
 };
