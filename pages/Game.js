@@ -12,6 +12,9 @@ import { getGame } from '../src/services/gameservice';
 
 const BoardContainer = styled('div')`
     height: 500px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 `;
 
 class Game extends Component {
@@ -27,7 +30,6 @@ class Game extends Component {
 
     static async getInitialProps() {
         const game = await getGame(490);
-
         return {
             game: game,
             loaded: !!game.grid,
