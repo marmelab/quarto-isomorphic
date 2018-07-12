@@ -13,35 +13,28 @@ const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-const listenedGame = {};
 const gameListeners = {};
 
-const setIntervalForListenedGame = (socket, idGame) => {
-    if (!listenedGame[idGame]) {
-        listenedGame[idGame] = setInterval(async () => {
-            let game = await getGame(idGame);
-            if (gameListeners[idGame])
-                gameListeners[idGame].forEach(s => {
-                    s.emit(`game${idGame}`, game);
-                });
-        }, 3000);
-        gameListeners[idGame] = [];
+const refreshGameForOpenedSockets = async idGame => {
+    if (gameListeners[idGame]) {
+        const game = await getGame(idGame);
+        gameListeners[idGame].forEach(s => {
+            s.emit(`game${idGame}`, game);
+        });
     }
-    gameListeners[idGame].push(socket);
-    return listenedGame[idGame];
 };
 
-const unsetIntervalForListenedGame = (socket, idGame) => {
+const registerGameListener = (socket, idGame) => {
+    if (!gameListeners[idGame]) gameListeners[idGame] = [];
+    gameListeners[idGame].push(socket);
+};
+
+const unregisterGameListener = (socket, idGame) => {
     if (gameListeners[idGame]) {
         let index = gameListeners[idGame].indexOf(socket);
         if (index > -1) {
             gameListeners[idGame].splice(index, 1);
         }
-    }
-
-    if (!gameListeners[idGame] || gameListeners[idGame].length === 0) {
-        clearInterval(listenedGame[idGame]);
-        listenedGame[idGame] = undefined;
     }
 };
 
@@ -50,15 +43,20 @@ io.on('connection', socket => {
 
     socket.on('listenGame', data => {
         socket.idGame = data.id;
-        setIntervalForListenedGame(socket, data.id);
+        registerGameListener(socket, data.id);
     });
     socket.on('disconnect', function() {
-        unsetIntervalForListenedGame(socket, socket.idGame);
+        unregisterGameListener(socket, socket.idGame);
         console.log('user disconnected');// eslint-disable-line
     });
 });
 
 nextApp.prepare().then(() => {
+    app.get('/:idGame/updated', (req, res) => {
+        refreshGameForOpenedSockets(req.params.idGame);
+        res.json(true);
+    });
+
     app.get('*', (req, res) => {
         return nextHandler(req, res);
     });
