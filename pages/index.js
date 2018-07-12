@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import GameList from '../src/list/GameList';
 import Container from '../src/ui/Container';
+import Link from 'next/link';
+import Button from '../src/ui/Button';
 import { listGames } from '../src/services/gameservice';
 
 class HomeQuarto extends Component {
@@ -26,9 +28,7 @@ class HomeQuarto extends Component {
                     <img src="/static/boardTitle.jpg" alt="logo" />
                     <h2>Welcome to Quarto-isomorphic</h2>
                 </div>
-                <div>
-                    <GameList list={list} />
-                </div>
+                <GameList list={list} />
             </Container>
         );
     }
