@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 import socketio from 'socket.io';
 import next from 'next';
-import request from 'request';
+import { getGame } from './src/services/gameservice';
 
 const app = express();
 const server = http.Server(app);
@@ -13,15 +13,21 @@ const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-const config = { apiUrl: 'localhost/gameapi' };
+//const config = { apiUrl: 'localhost/gameapi' };
 
 const listenedGame = {};
 const gameListeners = {};
 
 const setIntervalForListenedGame = (socket, idGame) => {
     if (!listenedGame[idGame]) {
-        listenedGame[idGame] = setInterval(() => {
-            let url = `http://${config.apiUrl}/${idGame}`;
+        listenedGame[idGame] = setInterval(async () => {
+            let game = await getGame(idGame);
+            if (gameListeners[idGame])
+                gameListeners[idGame].forEach(s => {
+                    s.emit(`game${idGame}`, game);
+                });
+
+            /* let url = `http://${config.apiUrl}/${idGame}`;
             request(
                 url,
                 (error, response, body) =>
@@ -31,7 +37,7 @@ const setIntervalForListenedGame = (socket, idGame) => {
                     gameListeners[idGame].forEach(s =>
                         s.emit(`game${idGame}`, body),
                     ),
-            );
+            ); */
         }, 3000);
         gameListeners[idGame] = [];
     }
