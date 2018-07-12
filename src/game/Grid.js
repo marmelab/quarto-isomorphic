@@ -21,6 +21,7 @@ const Grid = props => (
                 {row.map((boxValue, boxKey) => (
                     <GridBox
                         key={boxKey}
+                        idGame={props.idGame}
                         boxValue={String(boxValue)}
                         x={boxKey}
                         y={rowKey}
@@ -46,6 +47,7 @@ const positionInclude = (placesList, x, y) => {
 };
 
 Grid.propTypes = {
+    idGame: PropTypes.number.isRequired,
     grid: PropTypes.array.isRequired,
     winningLine: PropTypes.array.isRequired,
     readOnly: PropTypes.bool,

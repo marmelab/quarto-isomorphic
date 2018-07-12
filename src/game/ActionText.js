@@ -20,10 +20,10 @@ ActionText.defaultProps = {
 };
 
 ActionText.propTypes = {
-    closed: PropTypes.bool.isRequired,
-    locked: PropTypes.bool.isRequired,
+    closed: PropTypes.bool,
+    locked: PropTypes.bool,
     selectedPiece: PropTypes.number.isRequired,
-    watchOnly: PropTypes.bool.isRequired,
+    watchOnly: PropTypes.bool,
 };
 
 export default ActionText;

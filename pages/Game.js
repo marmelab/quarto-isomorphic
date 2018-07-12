@@ -8,7 +8,7 @@ import Container from '../src/ui/Container';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import styled from 'react-emotion';
-import { getGame } from '../src/services/gameService';
+import { newGame, getGame } from '../src/services/gameService';
 
 const BoardContainer = styled('div')`
     height: 500px;
@@ -24,7 +24,12 @@ class Game extends Component {
     };
 
     static async getInitialProps(props) {
-        const game = await getGame(props.query.idGame);
+        let game = {};
+        if (props.query && props.query.idGame) {
+            game = await getGame(props.query.idGame);
+        } else {
+            game = await newGame(2);
+        }
 
         return {
             idGame: game.idGame,
@@ -58,6 +63,7 @@ class Game extends Component {
                         <BoardContainer>
                             <span>{game.idGame}</span>
                             <Grid
+                                idGame={game.idGame}
                                 grid={game.grid}
                                 goodPlaces={game.winningPlaces}
                                 winningLine={game.winningLine}
@@ -71,6 +77,7 @@ class Game extends Component {
                                 watchOnly={!!game.watch_only}
                             />
                             <RemainingList
+                                idGame={game.idGame}
                                 list={game.allPieces}
                                 selectedPiece={game.selectedPiece}
                                 badPieces={

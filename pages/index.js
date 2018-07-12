@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Link from 'next/link';
+import Button from '../src/ui/Button';
 import PropTypes from 'prop-types';
 import GameList from '../src/list/GameList';
 import Container from '../src/ui/Container';
@@ -21,6 +23,9 @@ class HomeQuarto extends Component {
                     <img src="/static/boardTitle.jpg" alt="logo" />
                     <h2>Welcome to Quarto-isomorphic</h2>
                 </div>
+                <Link href="/Game">
+                    <Button>Create a name game in duo</Button>
+                </Link>
                 <GameList list={onlyWatchlist} />
             </Container>
         );

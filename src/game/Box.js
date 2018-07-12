@@ -25,6 +25,7 @@ const Box = props => (
         aria-required="true"
         boxSize={props.boxSize}
         selected={props.selected}
+        onClick={props.handleClick}
     >
         {props.boxValue == '.' || (
             <ImgContainer
@@ -48,6 +49,7 @@ Box.propTypes = {
     badBox: PropTypes.bool,
     goodBox: PropTypes.bool,
     boxSize: PropTypes.string.isRequired,
+    handleClick: PropTypes.func.isRequired,
 };
 
 export default Box;

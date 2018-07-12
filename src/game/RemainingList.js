@@ -17,6 +17,7 @@ const RemainingList = props => (
                 return (
                     <RemainingBox
                         key={pieceKey}
+                        idGame={props.idGame}
                         boxValue={String(props.list[pieceKey].id)}
                         enabled={!props.readOnly}
                         clickable={!props.readOnly && props.activeZone}
@@ -39,6 +40,7 @@ RemainingList.defaultProps = {
 };
 
 RemainingList.propTypes = {
+    idGame: PropTypes.number.isRequired,
     list: PropTypes.object.isRequired,
     readOnly: PropTypes.bool,
     selectedPiece: PropTypes.number,
