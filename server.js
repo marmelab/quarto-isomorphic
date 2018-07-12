@@ -13,8 +13,6 @@ const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-//const config = { apiUrl: 'localhost/gameapi' };
-
 const listenedGame = {};
 const gameListeners = {};
 
@@ -26,18 +24,6 @@ const setIntervalForListenedGame = (socket, idGame) => {
                 gameListeners[idGame].forEach(s => {
                     s.emit(`game${idGame}`, game);
                 });
-
-            /* let url = `http://${config.apiUrl}/${idGame}`;
-            request(
-                url,
-                (error, response, body) =>
-                    !error &&
-                    response.statusCode == 200 &&
-                    gameListeners[idGame] &&
-                    gameListeners[idGame].forEach(s =>
-                        s.emit(`game${idGame}`, body),
-                    ),
-            ); */
         }, 3000);
         gameListeners[idGame] = [];
     }
