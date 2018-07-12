@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import GameList from '../src/list/GameList';
 import Container from '../src/ui/Container';
-import Link from 'next/link';
-import Button from '../src/ui/Button';
 import { listGames } from '../src/services/gameservice';
 
 class HomeQuarto extends Component {
