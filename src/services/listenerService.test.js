@@ -3,6 +3,9 @@ import {
     registerGameListener,
     unregisterGameListener,
 } from './listenerService';
+import { getGame } from './gameService';
+
+jest.mock('./gameService');
 
 describe('Ws listeners tests', () => {
     test('Test unregisterGameListener empty', () => {
@@ -43,12 +46,17 @@ describe('Ws listeners tests', () => {
     });
 
     test('Test refreshGameForOpenedSockets', async () => {
+        getGame.mockImplementation(i => {
+            return { idGame: i };
+        });
+
         registerGameListener({ id: 'FirstSocket', emit: jest.fn() }, 17);
         registerGameListener({ id: 'SecondSocket', emit: jest.fn() }, 17);
         registerGameListener({ id: 'ThridSocket', emit: jest.fn() }, 17);
         registerGameListener({ id: 'SoloSocket', emit: jest.fn() }, 114);
 
         const nbEmit = await refreshGameForOpenedSockets(17);
+
         expect(nbEmit).toEqual(3);
 
         const nbEmit2 = await refreshGameForOpenedSockets(114);
@@ -56,5 +64,8 @@ describe('Ws listeners tests', () => {
 
         const nbEmit3 = await refreshGameForOpenedSockets(1814);
         expect(nbEmit3).toEqual(0);
+
+        expect(getGame).toHaveBeenCalledWith(17);
+        expect(getGame).toHaveBeenCalledWith(114);
     });
 });
