@@ -1,15 +1,15 @@
-const request = require('request');
+import fetch from 'isomorphic-unfetch';
+import config from '../../config/config.dist';
 
-const config = { apiUrl: 'localhost/gameapi' };
+const logError = error => {
+    console.log('Fetch error : '); // eslint-disable-line
+    console.log(error); // eslint-disable-line
+    return {};
+};
 
-module.exports = {
-    getGame: (idGame, callBack, args) => {
-        const url = `http://${config.apiUrl}/${idGame}`;
-        request(url, function(error, response, body) {
-            if (!error && response.statusCode == 200) {
-                if (!callBack) return body;
-                callBack(args, body);
-            }
-        });
-    },
+export const getGame = async idGame => {
+    let url = `${config.apiUrl}/${idGame}`;
+    return fetch(url)
+        .then(res => res.json())
+        .catch(logError);
 };

@@ -5,14 +5,16 @@ import ActionText from '../src/game/ActionText';
 import Link from 'next/link';
 import Button from '../src/ui/Button';
 import Container from '../src/ui/Container';
-import config from '../config/config.dist';
 import PropTypes from 'prop-types';
-import fetch from 'isomorphic-unfetch';
 import io from 'socket.io-client';
 import styled from 'react-emotion';
+import { getGame } from '../src/services/gameservice';
 
 const BoardContainer = styled('div')`
     height: 500px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 `;
 
 class Game extends Component {
@@ -27,14 +29,10 @@ class Game extends Component {
     };
 
     static async getInitialProps() {
-        const url = `http://${config.apiUrl}/490`;
-
-        const res = await fetch(url);
-        const data = await res.json();
-
+        const game = await getGame(490);
         return {
-            game: data,
-            loaded: !!data.grid,
+            game: game,
+            loaded: !!game.grid,
         };
     }
 
@@ -51,7 +49,7 @@ class Game extends Component {
     };
 
     handleGame = game => {
-        this.setState({ game: JSON.parse(game) });
+        this.setState({ game });
     };
 
     render() {
