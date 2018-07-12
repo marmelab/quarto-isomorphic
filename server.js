@@ -2,7 +2,11 @@ import express from 'express';
 import http from 'http';
 import socketio from 'socket.io';
 import next from 'next';
-import { getGame } from './src/services/gameservice';
+import {
+    refreshGameForOpenedSockets,
+    registerGameListener,
+    unregisterGameListener,
+} from './src/services/listenerService';
 
 const app = express();
 const server = http.Server(app);
@@ -12,31 +16,6 @@ const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
-
-const gameListeners = {};
-
-const refreshGameForOpenedSockets = async idGame => {
-    if (gameListeners[idGame]) {
-        const game = await getGame(idGame);
-        gameListeners[idGame].forEach(s => {
-            s.emit(`game${idGame}`, game);
-        });
-    }
-};
-
-const registerGameListener = (socket, idGame) => {
-    if (!gameListeners[idGame]) gameListeners[idGame] = [];
-    gameListeners[idGame].push(socket);
-};
-
-const unregisterGameListener = (socket, idGame) => {
-    if (gameListeners[idGame]) {
-        let index = gameListeners[idGame].indexOf(socket);
-        if (index > -1) {
-            gameListeners[idGame].splice(index, 1);
-        }
-    }
-};
 
 io.on('connection', socket => {
     console.log('user connected');// eslint-disable-line
