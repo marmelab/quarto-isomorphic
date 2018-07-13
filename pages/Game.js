@@ -23,14 +23,11 @@ class Game extends Component {
         loaded: false,
     };
 
-    static propTypes = {
-        game: PropTypes.object.isRequired,
-        loaded: PropTypes.bool,
-    };
+    static async getInitialProps(props) {
+        const game = await getGame(props.query.idGame);
 
-    static async getInitialProps() {
-        const game = await getGame(547);
         return {
+            idGame: game.idGame,
             game: game,
             loaded: !!game.grid,
         };
@@ -56,42 +53,46 @@ class Game extends Component {
         const { game, loaded } = this.state;
         return (
             <Container>
-                {game.grid ? (
-                    <BoardContainer>
-                        <span>{game.idGame}</span>
-                        <Grid
-                            grid={game.grid}
-                            goodPlaces={game.winningPlaces}
-                            winningLine={game.winningLine}
-                            readOnly={game.locked}
-                            activeZone={game.selectedPiece > 0}
-                        />
-                        <ActionText
-                            closed={game.closed}
-                            locked={game.locked}
-                            selectedPiece={game.selectedPiece}
-                            watchOnly={!!game.watch_only}
-                        />
-                        <RemainingList
-                            list={game.allPieces}
-                            selectedPiece={game.selectedPiece}
-                            badPieces={
-                                game.winningLine.length == 0 &&
-                                game.selectedPiece == 0
-                                    ? game.winningPieces
-                                    : []
-                            }
-                            readOnly={game.locked}
-                            activeZone={game.selectedPiece === 0}
-                        />
-                    </BoardContainer>
-                ) : (
-                    loaded || (
+                {loaded ? (
+                    game.grid ? (
+                        <BoardContainer>
+                            <span>{game.idGame}</span>
+                            <Grid
+                                grid={game.grid}
+                                goodPlaces={game.winningPlaces}
+                                winningLine={game.winningLine}
+                                readOnly={game.locked}
+                                activeZone={game.selectedPiece > 0}
+                            />
+                            <ActionText
+                                closed={game.closed}
+                                locked={game.locked}
+                                selectedPiece={game.selectedPiece}
+                                watchOnly={!!game.watch_only}
+                            />
+                            <RemainingList
+                                list={game.allPieces}
+                                selectedPiece={game.selectedPiece}
+                                badPieces={
+                                    game.winningLine.length == 0 &&
+                                    game.selectedPiece == 0
+                                        ? game.winningPieces
+                                        : []
+                                }
+                                readOnly={game.locked}
+                                activeZone={game.selectedPiece === 0}
+                            />
+                        </BoardContainer>
+                    ) : (
                         <BoardContainer>
                             <span>Game not found !</span>
                             <span>Go choose another</span>
                         </BoardContainer>
                     )
+                ) : (
+                    <BoardContainer>
+                        <span>Loading ...</span>
+                    </BoardContainer>
                 )}
                 <Link href="/">
                     <Button>Back to home</Button>
@@ -100,5 +101,11 @@ class Game extends Component {
         );
     }
 }
+
+Game.propTypes = {
+    idGame: PropTypes.number.isRequired,
+    game: PropTypes.object.isRequired,
+    loaded: PropTypes.bool,
+};
 
 export default Game;

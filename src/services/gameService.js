@@ -13,3 +13,10 @@ export const getGame = async idGame => {
         .then(res => res.json())
         .catch(logError);
 };
+
+export const listGames = async listType => {
+    let url = `${config.apiUrl}/${listType}list`;
+    return fetch(url)
+        .then(res => res.json())
+        .catch(logError);
+};
