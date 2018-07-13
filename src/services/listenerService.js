@@ -1,8 +1,9 @@
 import { getGame } from './gameService';
 
-const gameListenersList = {};
-
-export const refreshGameForOpenedSockets = async idGame => {
+export const refreshGameForOpenedSockets = async (
+    gameListenersList,
+    idGame,
+) => {
     let emissionNumber = 0;
     if (gameListenersList[idGame]) {
         const game = await getGame(idGame);
@@ -14,18 +15,43 @@ export const refreshGameForOpenedSockets = async idGame => {
     return emissionNumber;
 };
 
-export const registerGameListener = (socket, idGame) => {
-    if (!gameListenersList[idGame]) gameListenersList[idGame] = [];
-    gameListenersList[idGame].push(socket);
-    return gameListenersList;
+export const registerGameListener = (gameListenersList, socket, idGame) => {
+    return {
+        ...gameListenersList,
+        [idGame]: (gameListenersList[idGame] || []).concat(socket),
+    };
 };
 
-export const unregisterGameListener = (socket, idGame) => {
-    if (gameListenersList[idGame]) {
-        let index = gameListenersList[idGame].indexOf(socket);
-        if (index > -1) {
-            gameListenersList[idGame].splice(index, 1);
-        }
+export const unregisterGameListener = (gameListenersList, socket, idGame) => {
+    if (!gameListenersList[idGame]) {
+        return gameListenersList;
     }
-    return gameListenersList;
+    const index = gameListenersList[idGame].indexOf(socket);
+    if (index < 0) {
+        return gameListenersList;
+    }
+
+    return {
+        ...gameListenersList,
+        [idGame]: [
+            ...gameListenersList[idGame].slice(0, index),
+            ...gameListenersList[idGame].slice(index + 1),
+        ],
+    };
 };
+
+export class ListenerService {
+    list = {};
+
+    constructor(list) {
+        this.list = list;
+    }
+
+    register = (socket, idGame) => {
+        this.list = registerGameListener(this.list, socket, idGame);
+    };
+    unregister = (socket, idGame) => {
+        this.list = unregisterGameListener(this.list, socket, idGame);
+    };
+    refreshGame = idGame => refreshGameForOpenedSockets(this.list, idGame);
+}

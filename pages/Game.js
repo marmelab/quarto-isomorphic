@@ -29,7 +29,7 @@ class Game extends Component {
     };
 
     static async getInitialProps() {
-        const game = await getGame(490);
+        const game = await getGame(547);
         return {
             game: game,
             loaded: !!game.grid,

@@ -2,11 +2,7 @@ import express from 'express';
 import http from 'http';
 import socketio from 'socket.io';
 import next from 'next';
-import {
-    refreshGameForOpenedSockets,
-    registerGameListener,
-    unregisterGameListener,
-} from './src/services/listenerService';
+import { ListenerService } from './src/services/listenerService';
 
 const app = express();
 const server = http.Server(app);
@@ -17,22 +13,24 @@ const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
+const listenerService = new ListenerService({});
+
 io.on('connection', socket => {
     console.log('user connected');// eslint-disable-line
 
     socket.on('listenGame', data => {
         socket.idGame = data.id;
-        registerGameListener(socket, data.id);
+        listenerService.register(socket, data.id);
     });
     socket.on('disconnect', function() {
-        unregisterGameListener(socket, socket.idGame);
+        listenerService.unregister(socket, socket.idGame);
         console.log('user disconnected');// eslint-disable-line
     });
 });
 
 nextApp.prepare().then(() => {
     app.get('/:idGame/updated', (req, res) => {
-        refreshGameForOpenedSockets(req.params.idGame);
+        listenerService.refreshGame(req.params.idGame);
         res.json(true);
     });
 
