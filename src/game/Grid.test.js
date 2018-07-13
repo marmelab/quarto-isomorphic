@@ -8,6 +8,7 @@ describe('Grid tests', () => {
     test('Test grid 16 render', () => {
         const { getAllByLabelText, queryAllByLabelText } = render(
             <Grid
+                idGame={100}
                 grid={[
                     ['.', '.', '.', '.'],
                     ['.', '.', '.', '.'],
@@ -49,6 +50,7 @@ describe('Grid tests', () => {
     test('Test grid 9 render', () => {
         const { getAllByLabelText } = render(
             <Grid
+                idGame={100}
                 grid={[['.', '3', '.'], ['.', '.', '.'], ['.', '7', '.']]}
                 winningLine={[]}
                 goodPlaces={[]}

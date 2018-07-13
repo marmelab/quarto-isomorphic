@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Box from './Box';
-import { placePiece } from '../services/gameservice';
+import { placePiece } from '../services/gameService';
 
 const GridBox = props => {
     const handleClick = async () => {

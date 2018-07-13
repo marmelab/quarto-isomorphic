@@ -6,8 +6,16 @@ afterEach(cleanup);
 
 describe('Box tests', () => {
     test('Test box render', () => {
+        const handleClick = async () => {};
+
         const { getAllByLabelText } = render(
-            <Box boxValue="10" label="testbox" selected={false} boxSize="20" />,
+            <Box
+                handleClick={handleClick}
+                boxValue="10"
+                label="testbox"
+                selected={false}
+                boxSize="20"
+            />,
         );
         const testbox = getAllByLabelText('testbox');
         expect(testbox).toBeTruthy();

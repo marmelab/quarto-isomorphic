@@ -7,7 +7,7 @@ afterEach(cleanup);
 describe('RemainingBox tests', () => {
     test('Test remainingBox 10 render', () => {
         const { getAllByLabelText } = render(
-            <RemainingBox boxValue="10" selected={false} />,
+            <RemainingBox idGame={100} boxValue="10" selected={false} />,
         );
         const testbox = getAllByLabelText('remainingbox_10');
         expect(testbox).toBeTruthy();
@@ -15,7 +15,7 @@ describe('RemainingBox tests', () => {
 
     test('Test remainingBox 15 selected render', () => {
         const { getAllByLabelText } = render(
-            <RemainingBox boxValue="15" selected={true} />,
+            <RemainingBox idGame={100} boxValue="15" selected={true} />,
         );
         const testbox = getAllByLabelText('remainingbox_15_selected');
         expect(testbox).toBeTruthy();

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Box from './Box';
-import { selectPiece } from '../services/gameservice';
+import { selectPiece } from '../services/gameService';
 
 const RemainingBox = props => {
     const handleClick = async () => {
