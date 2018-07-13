@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import styled from 'react-emotion';
 import { newGame, getGame } from '../src/services/gameService';
+import LoadingZone from '../src/ui/LoadingZone';
 
 const BoardContainer = styled('div')`
     height: 500px;
@@ -58,8 +59,8 @@ class Game extends Component {
         const { game, loaded } = this.state;
         return (
             <Container>
-                {loaded ? (
-                    game.grid ? (
+                <LoadingZone loaded={loaded}>
+                    {game.grid ? (
                         <BoardContainer>
                             <span>{game.idGame}</span>
                             <Grid
@@ -95,12 +96,8 @@ class Game extends Component {
                             <span>Game not found !</span>
                             <span>Go choose another</span>
                         </BoardContainer>
-                    )
-                ) : (
-                    <BoardContainer>
-                        <span>Loading ...</span>
-                    </BoardContainer>
-                )}
+                    )}
+                </LoadingZone>
                 <Link href="/">
                     <Button>Back to home</Button>
                 </Link>

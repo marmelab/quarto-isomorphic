@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import Link from 'next/link';
 import Button from '../ui/Button';
+import LoadingZone from '../ui/LoadingZone';
 
 const ListTitle = styled('span')`
     font-size: 20px;
@@ -49,8 +50,8 @@ class GameList extends Component {
         return (
             <ListContainer>
                 <ListTitle>Watch a game</ListTitle>
-                {loaded ? (
-                    list.length > 0 ? (
+                <LoadingZone loaded={loaded}>
+                    {list.length > 0 ? (
                         <ListDataContainer>
                             {' '}
                             {list.map((row, rowKey) => {
@@ -73,12 +74,8 @@ class GameList extends Component {
                             <span>No game found !</span>
                             <span>Wait to someone to create one</span>
                         </ListDataContainer>
-                    )
-                ) : (
-                    <ListDataContainer>
-                        <span>Loading ...</span>
-                    </ListDataContainer>
-                )}
+                    )}
+                </LoadingZone>
             </ListContainer>
         );
     }
