@@ -49,31 +49,35 @@ class GameList extends Component {
         return (
             <ListContainer>
                 <ListTitle>Watch a game</ListTitle>
-                {list ? (
-                    <ListDataContainer>
-                        {' '}
-                        {list.map((row, rowKey) => {
-                            return (
-                                <Link
-                                    prefetch
-                                    key={rowKey}
-                                    href={{
-                                        pathname: '/Game',
-                                        query: { idGame: row.idGame },
-                                    }}
-                                >
-                                    <Button>{`Game #${row.idGame}`}</Button>
-                                </Link>
-                            );
-                        })}
-                    </ListDataContainer>
-                ) : (
-                    loaded || (
+                {loaded ? (
+                    list.length > 0 ? (
+                        <ListDataContainer>
+                            {' '}
+                            {list.map((row, rowKey) => {
+                                return (
+                                    <Link
+                                        prefetch
+                                        key={rowKey}
+                                        href={{
+                                            pathname: '/Game',
+                                            query: { idGame: row.idGame },
+                                        }}
+                                    >
+                                        <Button>{`Game #${row.idGame}`}</Button>
+                                    </Link>
+                                );
+                            })}
+                        </ListDataContainer>
+                    ) : (
                         <ListDataContainer>
                             <span>No game found !</span>
                             <span>Wait to someone to create one</span>
                         </ListDataContainer>
                     )
+                ) : (
+                    <ListDataContainer>
+                        <span>Loading ...</span>
+                    </ListDataContainer>
                 )}
             </ListContainer>
         );

@@ -53,42 +53,46 @@ class Game extends Component {
         const { game, loaded } = this.state;
         return (
             <Container>
-                {game.grid ? (
-                    <BoardContainer>
-                        <span>{game.idGame}</span>
-                        <Grid
-                            grid={game.grid}
-                            goodPlaces={game.winningPlaces}
-                            winningLine={game.winningLine}
-                            readOnly={game.locked}
-                            activeZone={game.selectedPiece > 0}
-                        />
-                        <ActionText
-                            closed={game.closed}
-                            locked={game.locked}
-                            selectedPiece={game.selectedPiece}
-                            watchOnly={!!game.watch_only}
-                        />
-                        <RemainingList
-                            list={game.allPieces}
-                            selectedPiece={game.selectedPiece}
-                            badPieces={
-                                game.winningLine.length == 0 &&
-                                game.selectedPiece == 0
-                                    ? game.winningPieces
-                                    : []
-                            }
-                            readOnly={game.locked}
-                            activeZone={game.selectedPiece === 0}
-                        />
-                    </BoardContainer>
-                ) : (
-                    loaded || (
+                {loaded ? (
+                    game.grid ? (
+                        <BoardContainer>
+                            <span>{game.idGame}</span>
+                            <Grid
+                                grid={game.grid}
+                                goodPlaces={game.winningPlaces}
+                                winningLine={game.winningLine}
+                                readOnly={game.locked}
+                                activeZone={game.selectedPiece > 0}
+                            />
+                            <ActionText
+                                closed={game.closed}
+                                locked={game.locked}
+                                selectedPiece={game.selectedPiece}
+                                watchOnly={!!game.watch_only}
+                            />
+                            <RemainingList
+                                list={game.allPieces}
+                                selectedPiece={game.selectedPiece}
+                                badPieces={
+                                    game.winningLine.length == 0 &&
+                                    game.selectedPiece == 0
+                                        ? game.winningPieces
+                                        : []
+                                }
+                                readOnly={game.locked}
+                                activeZone={game.selectedPiece === 0}
+                            />
+                        </BoardContainer>
+                    ) : (
                         <BoardContainer>
                             <span>Game not found !</span>
                             <span>Go choose another</span>
                         </BoardContainer>
                     )
+                ) : (
+                    <BoardContainer>
+                        <span>Loading ...</span>
+                    </BoardContainer>
                 )}
                 <Link href="/">
                     <Button>Back to home</Button>

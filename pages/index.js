@@ -8,7 +8,7 @@ class HomeQuarto extends Component {
     static async getInitialProps() {
         const onlyWatchlist = await listGames('onlywatch');
         return {
-            onlyWatchlist,
+            onlyWatchlist: Array.isArray(onlyWatchlist) ? onlyWatchlist : [],
             loaded: !!onlyWatchlist,
         };
     }
