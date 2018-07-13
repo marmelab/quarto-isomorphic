@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import GameList from '../src/list/GameList';
 import Container from '../src/ui/Container';
-import { listGames } from '../src/services/gameservice';
+import { listGames } from '../src/services/gameService';
 
 class HomeQuarto extends Component {
     static propTypes = {

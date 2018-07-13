@@ -17,6 +17,6 @@ export const getGame = async idGame => {
 export const listGames = async listType => {
     let url = `${config.apiUrl}/${listType}list`;
     return fetch(url)
-        .then(handleErrors)
-        .then(res => res.json());
+        .then(res => res.json())
+        .catch(logError);
 };

@@ -33,6 +33,7 @@ class Game extends Component {
         const game = await getGame(props.query.idGame);
 
         return {
+            idGame: game.idGame,
             game: game,
             loaded: !!game.grid,
         };
