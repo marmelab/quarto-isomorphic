@@ -5,31 +5,31 @@ import Container from '../src/ui/Container';
 import { listGames } from '../src/services/gameService';
 
 class HomeQuarto extends Component {
-    static propTypes = {
-        list: PropTypes.array.isRequired,
-        loaded: PropTypes.bool,
-    };
-
     static async getInitialProps() {
-        const list = await listGames('onlywatch');
+        const onlyWatchlist = await listGames('onlywatch');
         return {
-            list: list,
-            loaded: !!list,
+            onlyWatchlist,
+            loaded: !!onlyWatchlist,
         };
     }
 
     render() {
-        const { list } = this.props;
+        const { onlyWatchlist } = this.props;
         return (
             <Container>
                 <div>
                     <img src="/static/boardTitle.jpg" alt="logo" />
                     <h2>Welcome to Quarto-isomorphic</h2>
                 </div>
-                <GameList list={list} />
+                <GameList list={onlyWatchlist} />
             </Container>
         );
     }
 }
+
+HomeQuarto.propTypes = {
+    onlyWatchlist: PropTypes.array.isRequired,
+    loaded: PropTypes.bool,
+};
 
 export default HomeQuarto;

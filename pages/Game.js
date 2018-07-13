@@ -23,12 +23,6 @@ class Game extends Component {
         loaded: false,
     };
 
-    static propTypes = {
-        idGame: PropTypes.number.isRequired,
-        game: PropTypes.object.isRequired,
-        loaded: PropTypes.bool,
-    };
-
     static async getInitialProps(props) {
         const game = await getGame(props.query.idGame);
 
@@ -103,5 +97,11 @@ class Game extends Component {
         );
     }
 }
+
+Game.propTypes = {
+    idGame: PropTypes.number.isRequired,
+    game: PropTypes.object.isRequired,
+    loaded: PropTypes.bool,
+};
 
 export default Game;

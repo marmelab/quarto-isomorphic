@@ -40,11 +40,6 @@ class GameList extends Component {
         loaded: false,
     };
 
-    static propTypes = {
-        list: PropTypes.array.isRequired,
-        loaded: PropTypes.bool,
-    };
-
     componentDidMount = async () => {
         this.setState({ list: this.props.list, loaded: true });
     };
@@ -84,5 +79,10 @@ class GameList extends Component {
         );
     }
 }
+
+GameList.propTypes = {
+    list: PropTypes.array.isRequired,
+    loaded: PropTypes.bool,
+};
 
 export default GameList;
