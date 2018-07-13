@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 import socketio from 'socket.io';
 import next from 'next';
-import { getGame } from './src/services/gameservice';
+import { ListenerService } from './src/services/listenerService';
 
 const app = express();
 const server = http.Server(app);
@@ -13,52 +13,27 @@ const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-const listenedGame = {};
-const gameListeners = {};
-
-const setIntervalForListenedGame = (socket, idGame) => {
-    if (!listenedGame[idGame]) {
-        listenedGame[idGame] = setInterval(async () => {
-            let game = await getGame(idGame);
-            if (gameListeners[idGame])
-                gameListeners[idGame].forEach(s => {
-                    s.emit(`game${idGame}`, game);
-                });
-        }, 3000);
-        gameListeners[idGame] = [];
-    }
-    gameListeners[idGame].push(socket);
-    return listenedGame[idGame];
-};
-
-const unsetIntervalForListenedGame = (socket, idGame) => {
-    if (gameListeners[idGame]) {
-        let index = gameListeners[idGame].indexOf(socket);
-        if (index > -1) {
-            gameListeners[idGame].splice(index, 1);
-        }
-    }
-
-    if (!gameListeners[idGame] || gameListeners[idGame].length === 0) {
-        clearInterval(listenedGame[idGame]);
-        listenedGame[idGame] = undefined;
-    }
-};
+const listenerService = new ListenerService({});
 
 io.on('connection', socket => {
     console.log('user connected');// eslint-disable-line
 
     socket.on('listenGame', data => {
         socket.idGame = data.id;
-        setIntervalForListenedGame(socket, data.id);
+        listenerService.register(socket, data.id);
     });
     socket.on('disconnect', function() {
-        unsetIntervalForListenedGame(socket, socket.idGame);
+        listenerService.unregister(socket, socket.idGame);
         console.log('user disconnected');// eslint-disable-line
     });
 });
 
 nextApp.prepare().then(() => {
+    app.get('/:idGame/updated', (req, res) => {
+        listenerService.refreshGame(req.params.idGame);
+        res.json(true);
+    });
+
     app.get('*', (req, res) => {
         return nextHandler(req, res);
     });

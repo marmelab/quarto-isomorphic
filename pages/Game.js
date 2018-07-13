@@ -8,7 +8,7 @@ import Container from '../src/ui/Container';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import styled from 'react-emotion';
-import { getGame } from '../src/services/gameservice';
+import { getGame } from '../src/services/gameService';
 
 const BoardContainer = styled('div')`
     height: 500px;
@@ -29,7 +29,7 @@ class Game extends Component {
     };
 
     static async getInitialProps() {
-        const game = await getGame(490);
+        const game = await getGame(547);
         return {
             game: game,
             loaded: !!game.grid,
