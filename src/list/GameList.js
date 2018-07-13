@@ -40,8 +40,8 @@ class GameList extends Component {
         loaded: false,
     };
 
-    componentDidMount = async () => {
-        this.setState({ list: this.props.list, loaded: true });
+    static getDerivedStateFromProps = props => {
+        return { list: props.list, loaded: true };
     };
 
     render() {
