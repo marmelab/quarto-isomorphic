@@ -12,14 +12,14 @@ const RemainingBox = props => {
             !props.selected &&
             props.clickable
         ) {
-            await selectPiece(props.idGame, props.boxValue);
-            console.log('selectPiece');
+            await selectPiece(props.idGame, props.boxValue, props.token);
         }
     };
     return (
         <Box
             boxSize="40"
             enabled={props.enabled}
+            clickable={props.clickable}
             boxValue={props.boxValue}
             label={`remainingbox_${props.boxValue}${
                 props.selected ? '_selected' : ''
@@ -27,6 +27,7 @@ const RemainingBox = props => {
             selected={props.selected}
             badBox={props.badPiece}
             handleClick={handleClick}
+            contxt="remaining"
         />
     );
 };
@@ -37,6 +38,7 @@ RemainingBox.defaultProps = {
 
 RemainingBox.propTypes = {
     idGame: PropTypes.number.isRequired,
+    token: PropTypes.string,
     boxValue: PropTypes.string.isRequired,
     enabled: PropTypes.bool,
     clickable: PropTypes.bool,

@@ -1,69 +1,62 @@
 import fetch from 'isomorphic-unfetch';
 import config from '../../config/config.dist';
-
-const logError = error => {
-    console.log('Fetch error : '); // eslint-disable-line
-    console.log(error); // eslint-disable-line
-    return {};
-};
+import { logFetchError } from './warningService';
 
 export const newGame = numberOfPlayers => {
     let url = config.apiUrl;
     if (numberOfPlayers === 1) {
         url += '/solo';
     }
-    //const method = 'POST';
-    //const headers = Object.assign({}, HEADER_JSON);
-    return fetch(url, {
-        //method,
-        //headers,
-    })
+    return fetch(url)
         .then(res => res.json())
         .then(res => {
-            //storeGameToken(res.idGame, res.tokenPlayerOne);
-            return res;
+            return {
+                idGame: res.idGame,
+                game: res,
+                token: res.tokenPlayerOne,
+            };
         })
-        .catch(logError);
+        .catch(logFetchError);
 };
 
-export const getGame = async idGame => {
+export const getGame = (idGame, token = undefined, register = undefined) => {
     let url = `${config.apiUrl}/${idGame}`;
+    if (register) {
+        url += '?register=1';
+    } else {
+        url += '?token=' + token;
+    }
     return fetch(url)
         .then(res => res.json())
-        .catch(logError);
+        .then(res => {
+            return {
+                idGame: res.idGame,
+                game: res,
+                token: res.tokenPlayerTwo,
+            };
+        })
+        .catch(logFetchError);
 };
 
-export const listGames = async listType => {
-    let url = `${config.apiUrl}/${listType}list`;
+export const listGames = async (listType, tokenList = []) => {
+    const url = `${config.apiUrl}/${listType}list?tokenList=${JSON.stringify(
+        tokenList,
+    )}`;
     return fetch(url)
         .then(res => res.json())
-        .catch(logError);
+        .catch(logFetchError);
 };
 
-export const placePiece = async (idGame, x, y) => {
-    let url = `${config.apiUrl}/${idGame}/place/${x}/${y}`;
-    //let token = await retrieveGameToken(game.idGame);
-    //url += '?token=' + token;
-    //const method = 'PUT';
-    //const headers = Object.assign({}, HEADER_JSON);
-    return fetch(url, {
-        //method,
-        //headers,
-    })
+export const placePiece = async (idGame, x, y, token) => {
+    const url = `${config.apiUrl}/${idGame}/place/${x}/${y}?token=${token}`;
+    return fetch(url)
         .then(res => res.json())
-        .catch(logError);
+        .catch(logFetchError);
 };
 
-export const selectPiece = async (idGame, piece) => {
-    let url = `${config.apiUrl}/${idGame}/select/${piece}`;
-    //let token = await retrieveGameToken(game.idGame);
-    //url += '?token=' + token;
-    //const method = 'PUT';
-    //const headers = Object.assign({}, HEADER_JSON);
-    return fetch(url, {
-        //method,
-        //headers,
-    })
+export const selectPiece = async (idGame, piece, token) => {
+    const url = `${config.apiUrl}/${idGame}/select/${piece}?token=${token}`;
+    return fetch(url)
         .then(res => res.json())
-        .catch(logError);
+        .catch(logFetchError);
 };

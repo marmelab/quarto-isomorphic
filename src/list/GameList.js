@@ -5,18 +5,20 @@ import Link from 'next/link';
 import Button from '../ui/Button';
 import LoadingZone from '../ui/LoadingZone';
 
-const ListTitle = styled('span')`
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    margin: 0 4px;
-    text-align: center;
-    margin: 10px 4px;
-    background-color: purple;
-    border-radius: 3px;
-    color: white;
-    line-height: 50px;
-`;
+const ListTitle = styled('span')(
+    {
+        fontSize: '20px',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        margin: '10px 4px',
+        borderRadius: '3px',
+        color: 'white',
+        lineHeight: '50px',
+    },
+    props => ({
+        backgroundColor: props.color,
+    }),
+);
 
 const ListDataContainer = styled('div')`
     display: flex;
@@ -27,29 +29,44 @@ const ListDataContainer = styled('div')`
     overflow-x: hidden;
 `;
 
-const ListContainer = styled('div')`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border: 1px solid purple;
-    border-radius: 3px;
-`;
+const ListContainer = styled('div')(
+    {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'start',
+        border: '1px solid',
+        borderRadius: '3px',
+        margin: '0 4px',
+        width: '33%',
+    },
+    props => ({
+        borderColor: props.color,
+    }),
+);
 
 class GameList extends Component {
     state = {
         list: [],
+        color: 'green',
+        register: false,
         loaded: false,
     };
 
     static getDerivedStateFromProps = props => {
-        return { list: props.list, loaded: true };
+        return {
+            list: props.list,
+            title: props.title,
+            color: props.color,
+            register: props.register,
+            loaded: true,
+        };
     };
 
     render() {
-        const { list, loaded } = this.state;
+        const { title, list, loaded, color, register } = this.state;
         return (
-            <ListContainer>
-                <ListTitle>Watch a game</ListTitle>
+            <ListContainer color={color}>
+                <ListTitle color={color}>{title}</ListTitle>
                 <LoadingZone loaded={loaded}>
                     {list.length > 0 ? (
                         <ListDataContainer>
@@ -57,11 +74,13 @@ class GameList extends Component {
                             {list.map((row, rowKey) => {
                                 return (
                                     <Link
-                                        prefetch
                                         key={rowKey}
                                         href={{
                                             pathname: '/Game',
-                                            query: { idGame: row.idGame },
+                                            query: {
+                                                idGame: row.idGame,
+                                                register,
+                                            },
                                         }}
                                     >
                                         <Button>{`Game #${row.idGame}`}</Button>
@@ -83,7 +102,10 @@ class GameList extends Component {
 
 GameList.propTypes = {
     list: PropTypes.array.isRequired,
+    title: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
     loaded: PropTypes.bool,
+    register: PropTypes.bool,
 };
 
 export default GameList;

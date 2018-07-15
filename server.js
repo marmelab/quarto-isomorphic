@@ -20,10 +20,10 @@ io.on('connection', socket => {
 
     socket.on('listenGame', data => {
         socket.idGame = data.id;
-        listenerService.register(socket, data.id);
+        listenerService.register(socket, data.id, data.token);
     });
     socket.on('disconnect', function() {
-        listenerService.unregister(socket, socket.idGame);
+        listenerService.unregister(socket.id, socket.idGame);
         console.log('user disconnected');// eslint-disable-line
     });
 });
@@ -31,6 +31,7 @@ io.on('connection', socket => {
 nextApp.prepare().then(() => {
     app.get('/:idGame/updated', (req, res) => {
         listenerService.refreshGame(req.params.idGame);
+        console.log(`game ${req.params.idGame} refreshed`);// eslint-disable-line
         res.json(true);
     });
 
