@@ -47,6 +47,10 @@ class Game extends Component {
         };
     }
 
+    static getDerivedStateFromProps = props => {
+        return props;
+    };
+
     componentDidMount = async () => {
         this.setState(this.props);
         const { idGame, token } = this.props;

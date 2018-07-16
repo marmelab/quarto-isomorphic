@@ -39,6 +39,10 @@ class HomeQuarto extends Component {
         };
     }
 
+    static getDerivedStateFromProps = props => {
+        return props;
+    };
+
     componentDidMount = async () => {
         const tokenList = retrieveGameTokenList();
         const currentlist = await listGames('current', tokenList);

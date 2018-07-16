@@ -14,6 +14,12 @@ const RowContainer = styled('div')`
     justify-content: center;
 `;
 
+const positionInclude = (placesList, x, y) => {
+    return placesList.some(place => {
+        return place[0] == y && place[1] == x;
+    });
+};
+
 const Grid = props => (
     <GridContainer>
         {props.grid.map((row, rowKey) => (
@@ -40,12 +46,6 @@ const Grid = props => (
         ))}
     </GridContainer>
 );
-
-const positionInclude = (placesList, x, y) => {
-    return placesList.some(place => {
-        return place[0] == y && place[1] == x;
-    });
-};
 
 Grid.propTypes = {
     idGame: PropTypes.number.isRequired,
