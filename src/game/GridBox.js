@@ -4,26 +4,37 @@ import Box from './Box';
 import { placePiece } from '../services/gameService';
 
 const GridBox = props => {
+    const {
+        idGame,
+        boxValue,
+        enabled,
+        x,
+        y,
+        clickable,
+        token,
+        winningBox,
+        goodPlace,
+    } = props;
     const handleClick = async () => {
         if (
-            props.idGame &&
-            props.boxValue === '.' &&
-            props.enabled &&
-            props.x >= 0 &&
-            props.y >= 0 &&
-            props.clickable
+            idGame &&
+            boxValue === '.' &&
+            enabled &&
+            x >= 0 &&
+            y >= 0 &&
+            clickable
         ) {
-            await placePiece(props.idGame, props.x, props.y, props.token);
+            await placePiece(idGame, x, y, token);
         }
     };
     return (
         <Box
-            enabled={props.enabled}
-            clickable={props.clickable && props.boxValue === '.'}
-            boxValue={props.boxValue}
-            label={`gridbox_${props.boxValue}_x${props.x}_y${props.y}`}
-            winningBox={props.winningBox}
-            goodBox={props.goodPlace}
+            enabled={enabled}
+            clickable={clickable && boxValue === '.'}
+            boxValue={boxValue}
+            label={`gridbox_${boxValue}_x${x}_y${y}`}
+            winningBox={winningBox}
+            goodBox={goodPlace}
             boxSize="60"
             handleClick={handleClick}
             context="grid"

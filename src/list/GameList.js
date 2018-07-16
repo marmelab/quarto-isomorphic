@@ -15,8 +15,8 @@ const ListTitle = styled('span')(
         color: 'white',
         lineHeight: '50px',
     },
-    props => ({
-        backgroundColor: props.color,
+    ({ color }) => ({
+        backgroundColor: color,
     }),
 );
 
@@ -39,8 +39,8 @@ const ListContainer = styled('div')(
         margin: '0 4px',
         width: '33%',
     },
-    props => ({
-        borderColor: props.color,
+    ({ color }) => ({
+        borderColor: color,
     }),
 );
 
@@ -52,12 +52,12 @@ class GameList extends Component {
         loaded: false,
     };
 
-    static getDerivedStateFromProps = props => {
+    static getDerivedStateFromProps = ({ list, title, color, register }) => {
         return {
-            list: props.list,
-            title: props.title,
-            color: props.color,
-            register: props.register,
+            list: list,
+            title: title,
+            color: color,
+            register: register,
             loaded: true,
         };
     };

@@ -11,14 +11,25 @@ const WinningTextTextContainer = styled('span')(
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    props => ({
-        color: props.youWon ? 'green' : props.watchOnly ? 'blue' : 'red',
+    ({ youWon, watchOnly }) => ({
+        color: youWon ? 'green' : watchOnly ? 'blue' : 'red',
     }),
 );
 
-const WinningText = props => (
-    <WinningTextTextContainer youWon={props.youWon} watchOnly={props.watchOnly}>
-        {getWinningText(props)}
+const getWinningText = (closed, youWon, winnerId) => {
+    if (!closed) return '';
+    if (youWon) {
+        return 'Congratulation, you won !!';
+    }
+    if (winnerId > 0) {
+        return `Player ${winnerId} won.`;
+    }
+    return "It's a draw";
+};
+
+const WinningText = ({ youWon, watchOnly, closed, winnerId }) => (
+    <WinningTextTextContainer youWon={youWon} watchOnly={watchOnly}>
+        {getWinningText(closed, youWon, winnerId)}
     </WinningTextTextContainer>
 );
 
@@ -37,14 +48,3 @@ WinningText.propTypes = {
 };
 
 export default WinningText;
-
-const getWinningText = props => {
-    if (!props.closed) return '';
-    if (props.youWon) {
-        return 'Congratulation, you won !!';
-    }
-    if (props.winnerId > 0) {
-        return `Player ${props.winnerId} won.`;
-    }
-    return "It's a draw";
-};

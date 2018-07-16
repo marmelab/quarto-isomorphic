@@ -7,21 +7,21 @@ const BoxContainer = styled('div')(
         padding: '2px',
         margin: '2px',
     },
-    props => ({
-        height: props.boxSize,
-        width: props.boxSize,
-        backgroundColor: props.winningBox
+    ({ boxSize, winningBox, selected, clickable, context }) => ({
+        height: boxSize,
+        width: boxSize,
+        backgroundColor: winningBox
             ? 'lightgreen'
-            : props.selected
+            : selected
                 ? '#80ffbf'
                 : 'lightblue',
-        ':hover': props.clickable
+        ':hover': clickable
             ? {
                   cursor: 'pointer',
                   background: 'rgba(0, 142, 198, 1)',
                   boxShadow: '2px 2px 2px 0 rgba(0, 0, 0, 0.3)',
                   position: 'relative',
-                  top: props.context !== 'grid' ? '-10px' : '',
+                  top: context !== 'grid' ? '-10px' : '',
                   transition: 'all 200ms cubic-bezier(0.42, 0, 0.58, 1)',
               }
             : {},
@@ -33,21 +33,30 @@ const ImgContainer = styled('img')`
     height: auto;
 `;
 
-const Box = props => (
+const Box = ({
+    label,
+    boxSize,
+    boxValue,
+    selected,
+    clickable,
+    handleClick,
+    context,
+    winningBox,
+}) => (
     <BoxContainer
-        aria-label={props.label}
+        aria-label={label}
         aria-required="true"
-        boxSize={props.boxSize}
-        selected={props.selected}
-        clickable={props.clickable}
-        onClick={props.handleClick}
-        context={props.context}
-        winningBox={props.winningBox}
+        boxSize={boxSize}
+        selected={selected}
+        clickable={clickable}
+        onClick={handleClick}
+        context={context}
+        winningBox={winningBox}
     >
-        {props.boxValue == '.' || (
+        {boxValue == '.' || (
             <ImgContainer
-                src={'/static/pieceImage' + String(props.boxValue) + '.png'}
-                alt={String(props.clickable)}
+                src={'/static/pieceImage' + String(boxValue) + '.png'}
+                alt={String(clickable)}
             />
         )}
     </BoxContainer>
