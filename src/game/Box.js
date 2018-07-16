@@ -4,13 +4,17 @@ import styled from 'react-emotion';
 
 const BoxContainer = styled('div')(
     {
-        margin: '2px',
         padding: '2px',
+        margin: '2px',
     },
     props => ({
         height: props.boxSize,
         width: props.boxSize,
-        backgroundColor: props.selected ? '#80ffbf' : 'lightblue',
+        backgroundColor: props.winningBox
+            ? 'lightgreen'
+            : props.selected
+                ? '#80ffbf'
+                : 'lightblue',
         ':hover': props.clickable
             ? {
                   cursor: 'pointer',
@@ -38,6 +42,7 @@ const Box = props => (
         clickable={props.clickable}
         onClick={props.handleClick}
         context={props.context}
+        winningBox={props.winningBox}
     >
         {props.boxValue == '.' || (
             <ImgContainer
