@@ -111,12 +111,16 @@ class GameList extends Component {
                                                 src={`https://robohash.org/${
                                                     row.playerOneName
                                                 }.png`}
+                                                alt={row.playerOneName}
+                                                title={row.playerOneName}
                                             />
                                             {row.playerTwoName && (
                                                 <AvatarListContainer
                                                     src={`https://robohash.org/${
                                                         row.playerTwoName
                                                     }.png`}
+                                                    alt={row.playerTwoName}
+                                                    title={row.playerTwoName}
                                                 />
                                             )}
                                         </Button>
