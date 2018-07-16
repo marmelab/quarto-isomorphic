@@ -2,11 +2,11 @@ import styled from 'react-emotion';
 
 const Button = styled('button')`
     display: inline-block;
-    min-height: 20px;
+    min-height: 40px;
     margin: 4px;
     box-sizing: content-box;
     cursor: pointer;
-    padding: 10px 20px;
+    padding: 0px 20px;
     border: 1px solid #018dc4;
     border-radius: 3px;
     font: normal medium/normal Arial, Helvetica, sans-serif;

@@ -5,6 +5,7 @@ import Button from '../src/ui/Button';
 import ButtonContainer from '../src/ui/ButtonContainer';
 import PropTypes from 'prop-types';
 import GameList from '../src/list/GameList';
+import NameForm from '../src/ui/NameForm';
 import Container from '../src/ui/Container';
 import { listGames } from '../src/services/gameService';
 import { retrieveGameTokenList } from '../src/services/storageService';
@@ -51,15 +52,27 @@ class HomeQuarto extends Component {
     };
 
     render() {
-        const { currentlist, openedlist, onlyWatchlist } = this.state;
+        const { currentlist, openedlist, onlyWatchlist, avatar } = this.state;
+        const handleChangeAvatar = value => {
+            this.setState({ avatar: value });
+        };
+
         return (
             <Container>
                 <div>
                     <img src="/static/boardTitle.jpg" alt="logo" />
                     <h2>Welcome to Quarto-isomorphic</h2>
                 </div>
+                <NameForm action={handleChangeAvatar} />
                 <ButtonContainer>
-                    <Link href="/Game">
+                    <Link
+                        href={{
+                            pathname: '/Game',
+                            query: {
+                                avatar: avatar,
+                            },
+                        }}
+                    >
                         <Button>Create a new game in duo</Button>
                     </Link>
                 </ButtonContainer>
@@ -74,6 +87,7 @@ class HomeQuarto extends Component {
                         title="Join a game"
                         register={true}
                         list={openedlist}
+                        avatar={avatar}
                     />
                     <GameList
                         color="purple"

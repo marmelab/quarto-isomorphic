@@ -7,10 +7,13 @@ const fetchService = async url =>
         .then(res => res.json())
         .catch(logFetchError);
 
-export const newGame = async numberOfPlayers => {
+export const newGame = async (numberOfPlayers, avatar) => {
     let url = config.apiUrl;
     if (numberOfPlayers === 1) {
         url += '/solo';
+    }
+    if (avatar) {
+        url += '?avatar=' + avatar;
     }
     const res = await fetchService(url);
     return {
@@ -23,10 +26,14 @@ export const getGame = async (
     idGame,
     token = undefined,
     register = undefined,
+    avatar = undefined,
 ) => {
-    const url = `${config.apiUrl}/${idGame}${
+    let url = `${config.apiUrl}/${idGame}${
         register ? '?register=1' : '?token=' + token
     }`;
+    if (avatar) {
+        url += '&avatar=' + avatar;
+    }
     const res = await fetchService(url);
     return {
         game: res,

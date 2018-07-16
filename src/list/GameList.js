@@ -27,6 +27,17 @@ const ListDataContainer = styled('div')`
     max-height: 500px;
     overflow-y: scroll;
     overflow-x: hidden;
+    max-height: 400px;
+`;
+
+const AvatarListContainer = styled('img')`
+    width: 28px;
+    height: auto;
+    vertical-align: middle;
+    background-color: white;
+    margin: 0px 4px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2);
 `;
 
 const ListContainer = styled('div')(
@@ -52,18 +63,25 @@ class GameList extends Component {
         loaded: false,
     };
 
-    static getDerivedStateFromProps = ({ list, title, color, register }) => {
+    static getDerivedStateFromProps = ({
+        list,
+        title,
+        color,
+        register,
+        avatar,
+    }) => {
         return {
             list: list,
             title: title,
             color: color,
             register: register,
+            avatar: avatar,
             loaded: true,
         };
     };
 
     render() {
-        const { title, list, loaded, color, register } = this.state;
+        const { title, list, loaded, color, register, avatar } = this.state;
         return (
             <ListContainer color={color}>
                 <ListTitle color={color}>{title}</ListTitle>
@@ -80,13 +98,28 @@ class GameList extends Component {
                                             query: {
                                                 idGame: row.idGame,
                                                 register,
+                                                avatar: avatar,
                                                 token: row.token,
                                             },
                                         }}
                                     >
-                                        <Button>{`Game #${row.idGame} (${
-                                            row.soloGame ? 'single' : 'dual'
-                                        })`}</Button>
+                                        <Button>
+                                            {`Game #${row.idGame} (${
+                                                row.soloGame ? 'single' : 'dual'
+                                            })`}
+                                            <AvatarListContainer
+                                                src={`https://robohash.org/${
+                                                    row.playerOneName
+                                                }.png`}
+                                            />
+                                            {row.playerTwoName && (
+                                                <AvatarListContainer
+                                                    src={`https://robohash.org/${
+                                                        row.playerTwoName
+                                                    }.png`}
+                                                />
+                                            )}
+                                        </Button>
                                     </Link>
                                 );
                             })}
@@ -109,6 +142,7 @@ GameList.propTypes = {
     color: PropTypes.string.isRequired,
     loaded: PropTypes.bool,
     register: PropTypes.bool,
+    avatar: PropTypes.string,
 };
 
 export default GameList;
