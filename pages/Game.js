@@ -31,7 +31,7 @@ class Game extends Component {
         if (props.query && props.query.idGame) {
             gameData = await getGame(
                 props.query.idGame,
-                null,
+                props.query.token,
                 props.query.register,
             );
         } else {
@@ -41,7 +41,7 @@ class Game extends Component {
         return {
             idGame: gameData.idGame,
             game: gameData.game,
-            token: gameData.token,
+            token: gameData.token || props.query.token,
             loaded: !!gameData.game.grid,
         };
     }

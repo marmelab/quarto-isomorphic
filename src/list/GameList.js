@@ -80,10 +80,13 @@ class GameList extends Component {
                                             query: {
                                                 idGame: row.idGame,
                                                 register,
+                                                token: row.token,
                                             },
                                         }}
                                     >
-                                        <Button>{`Game #${row.idGame}`}</Button>
+                                        <Button>{`Game #${row.idGame} (${
+                                            row.soloGame ? 'single' : 'dual'
+                                        })`}</Button>
                                     </Link>
                                 );
                             })}
