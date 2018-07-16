@@ -16,22 +16,21 @@ const nextHandler = nextApp.getRequestHandler();
 const listenerService = new ListenerService({});
 
 io.on('connection', socket => {
-    console.log('user connected');// eslint-disable-line
-
+    global.console.log('user connected');
     socket.on('listenGame', data => {
         socket.idGame = data.id;
         listenerService.register(socket, data.id, data.token);
     });
     socket.on('disconnect', function() {
         listenerService.unregister(socket.id, socket.idGame);
-        console.log('user disconnected');// eslint-disable-line
+        global.console.log('user disconnected');
     });
 });
 
 nextApp.prepare().then(() => {
     app.get('/:idGame/updated', (req, res) => {
         listenerService.refreshGame(req.params.idGame);
-        console.log(`game ${req.params.idGame} refreshed`);// eslint-disable-line
+        global.console.log(`game ${req.params.idGame} refreshed`);
         res.json(true);
     });
 
@@ -41,6 +40,6 @@ nextApp.prepare().then(() => {
 
     server.listen(port, err => {
         if (err) throw err;
-        console.log(`> Ready on http://localhost:${port}`);// eslint-disable-line
+        global.console.log(`> Ready on http://localhost:${port}`);
     });
 });

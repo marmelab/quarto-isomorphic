@@ -28,34 +28,32 @@ class Game extends Component {
     };
 
     static async getInitialProps(props) {
+        const { query } = props;
         let gameData = {};
-        if (props.query && props.query.idGame) {
-            gameData = await getGame(
-                props.query.idGame,
-                props.query.token,
-                props.query.register,
-            );
+        if (query && query.idGame) {
+            gameData = await getGame(query.idGame, query.token, query.register);
         } else {
             gameData = await newGame(2);
         }
-
+        const { idGame, game, token } = gameData;
         return {
-            idGame: gameData.idGame,
-            game: gameData.game,
-            token: gameData.token || props.query.token,
-            loaded: !!gameData.game.grid,
+            idGame: idGame,
+            game: game,
+            token: token || query.token,
+            loaded: !!game.grid,
         };
     }
 
     componentDidMount = async () => {
         this.setState(this.props);
+        const { idGame, token } = this.props;
 
-        storeGameToken(this.props.idGame, this.props.token);
+        storeGameToken(idGame, token);
         this.socket = io();
-        this.socket.on(`game${this.props.idGame}`, this.handleGame);
+        this.socket.on(`game${this.idGame}`, this.handleGame);
         this.socket.emit('listenGame', {
-            id: this.props.idGame,
-            token: this.props.token,
+            id: idGame,
+            token: token,
         });
     };
 
