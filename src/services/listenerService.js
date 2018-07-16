@@ -4,15 +4,12 @@ export const refreshGameForOpenedSockets = async (
     gameListenersList,
     idGame,
 ) => {
-    let emissionNumber = 0;
     if (gameListenersList[idGame]) {
         gameListenersList[idGame].forEach(async s => {
             let gameData = await getGame(idGame, s.token);
             s.socket.emit(`game${idGame}`, gameData.game);
-            emissionNumber++;
         });
     }
-    return emissionNumber;
 };
 
 export const registerGameListener = (
