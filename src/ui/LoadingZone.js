@@ -14,11 +14,11 @@ const LoadingZoneContainer = styled('div')`
     font-weight: bold;
 `;
 
-const LoadingZone = props => {
+const LoadingZone = ({ loaded, children }) => {
     return (
         <div>
-            {props.loaded ? (
-                props.children
+            {loaded ? (
+                children
             ) : (
                 <LoadingZoneContainer>
                     <img src="/static/spinning-circles.svg" alt="loading" />
