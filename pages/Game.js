@@ -50,7 +50,7 @@ class Game extends Component {
 
         storeGameToken(idGame, token);
         this.socket = io();
-        this.socket.on(`game${this.idGame}`, this.handleGame);
+        this.socket.on(`game${idGame}`, this.handleGame);
         this.socket.emit('listenGame', {
             id: idGame,
             token: token,
