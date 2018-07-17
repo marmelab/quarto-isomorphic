@@ -35,9 +35,9 @@ class Game extends Component {
         } else {
             gameData = await newGame(2);
         }
-        const { idGame, game, token } = gameData;
+        const { game, token } = gameData;
         return {
-            idGame: idGame,
+            idGame: game.idGame,
             game: game,
             token: token || query.token,
             loaded: !!game.grid,

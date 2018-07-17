@@ -15,7 +15,6 @@ export const newGame = async numberOfPlayers => {
     }
     const res = await fetchService(url);
     return {
-        idGame: res.idGame,
         game: res,
         token: res.tokenPlayerOne,
     };
@@ -34,7 +33,6 @@ export const getGame = async (
     }
     const res = await fetchService(url);
     return {
-        idGame: res.idGame,
         game: res,
         token: res.tokenPlayerTwo,
     };
