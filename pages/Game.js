@@ -29,13 +29,11 @@ class Game extends Component {
 
     static async getInitialProps(props) {
         const { query } = props;
-        let gameData = {};
-        if (query && query.idGame) {
-            gameData = await getGame(query.idGame, query.token, query.register);
-        } else {
-            gameData = await newGame(2);
-        }
-        const { game, token } = gameData;
+        let { game, token } =
+            query && query.idGame
+                ? await getGame(query.idGame, query.token, query.register)
+                : await newGame(2);
+
         return {
             idGame: game.idGame,
             game: game,

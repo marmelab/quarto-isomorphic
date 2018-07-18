@@ -2,11 +2,10 @@ import fetch from 'isomorphic-unfetch';
 import config from '../../config/config.dist';
 import { logFetchError } from './warningService';
 
-const fetchService = async url => {
-    return fetch(url)
+const fetchService = async url =>
+    await fetch(url)
         .then(res => res.json())
         .catch(logFetchError);
-};
 
 export const newGame = async numberOfPlayers => {
     let url = config.apiUrl;
@@ -25,12 +24,9 @@ export const getGame = async (
     token = undefined,
     register = undefined,
 ) => {
-    let url = `${config.apiUrl}/${idGame}`;
-    if (register) {
-        url += '?register=1';
-    } else {
-        url += '?token=' + token;
-    }
+    const url = `${config.apiUrl}/${idGame}${
+        register ? '?register=1' : '?token=' + token
+    }`;
     const res = await fetchService(url);
     return {
         game: res,
