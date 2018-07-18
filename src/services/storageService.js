@@ -2,11 +2,21 @@ import { logStorageError } from './warningService';
 
 const prefixStorage = '@Quarto:';
 const tokenStorage = `${prefixStorage}gameTokens`;
+const gameStorage = localStorage;
 
 export const storeGameToken = (idGame, token) => {
     try {
         const tokenList = generateStorageTokens(idGame, token);
-        localStorage.setItem(tokenStorage, JSON.stringify(tokenList));
+        gameStorage.setItem(tokenStorage, JSON.stringify(tokenList));
+    } catch (error) {
+        logStorageError(error, 'Data cannot be saved in device');
+    }
+};
+
+export const storeGameTokenForStorage = (myStorage, idGame, token) => {
+    try {
+        const tokenList = generateStorageTokens(idGame, token);
+        gameStorage.setItem(tokenStorage, JSON.stringify(tokenList));
     } catch (error) {
         logStorageError(error, 'Data cannot be saved in device');
     }
@@ -14,7 +24,7 @@ export const storeGameToken = (idGame, token) => {
 
 export const retrieveGameTokenList = () => {
     try {
-        const value = localStorage.getItem(tokenStorage);
+        const value = gameStorage.getItem(tokenStorage);
         if (value !== null) {
             return JSON.parse(value);
         }
@@ -39,7 +49,7 @@ const generateStorageTokens = (idGame, token) => {
 
 export const clearStorage = () => {
     try {
-        localStorage.clear();
+        gameStorage.clear();
     } catch (error) {
         logStorageError(error, 'Storage connot be cleared in device');
     }

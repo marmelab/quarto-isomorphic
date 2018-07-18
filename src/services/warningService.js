@@ -1,19 +1,10 @@
-export const logFetchError = error => {
-    logError(error, 'Fetch error');
-    return {};
-};
-
-export const logStorageError = error => {
-    logError(error, 'Storage error');
-    return {};
-};
-
-export const logCustomError = (error, message) => {
-    logError(error, message);
-    return {};
-};
-
-const logError = (error, message) => {
+const logError = message => error => {
     console.log(message); // eslint-disable-line
     console.log(error); // eslint-disable-line
 };
+
+export const logFetchError = logError('Fetch error');
+
+export const logStorageError = logError('Storage error');
+
+export const logCustomError = (error, message) => logError(message)(error);
