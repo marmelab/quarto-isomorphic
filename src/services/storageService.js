@@ -2,27 +2,17 @@ import { logStorageError } from './warningService';
 
 const prefixStorage = '@Quarto:';
 const tokenStorage = `${prefixStorage}gameTokens`;
-const gameStorage = localStorage;
 
-export const storeGameToken = (idGame, token) => {
+export const storeGameToken = (idGame, token, gameStorage = localStorage) => {
     try {
-        const tokenList = generateStorageTokens(idGame, token);
+        const tokenList = generateStorageTokens(idGame, token, gameStorage);
         gameStorage.setItem(tokenStorage, JSON.stringify(tokenList));
     } catch (error) {
         logStorageError(error, 'Data cannot be saved in device');
     }
 };
 
-export const storeGameTokenForStorage = (myStorage, idGame, token) => {
-    try {
-        const tokenList = generateStorageTokens(idGame, token);
-        gameStorage.setItem(tokenStorage, JSON.stringify(tokenList));
-    } catch (error) {
-        logStorageError(error, 'Data cannot be saved in device');
-    }
-};
-
-export const retrieveGameTokenList = () => {
+export const retrieveGameTokenList = (gameStorage = localStorage) => {
     try {
         const value = gameStorage.getItem(tokenStorage);
         if (value !== null) {
@@ -34,20 +24,20 @@ export const retrieveGameTokenList = () => {
     }
 };
 
-export const retrieveGameToken = idGame => {
-    const tokenList = retrieveGameTokenList();
+export const retrieveGameToken = (idGame, gameStorage = localStorage) => {
+    const tokenList = retrieveGameTokenList(gameStorage);
     return tokenList[idGame];
 };
 
-const generateStorageTokens = (idGame, token) => {
-    const tokenList = retrieveGameTokenList();
+const generateStorageTokens = (idGame, token, gameStorage = localStorage) => {
+    const tokenList = retrieveGameTokenList(gameStorage);
     if (idGame && token) {
         tokenList[idGame] = token;
     }
     return tokenList;
 };
 
-export const clearStorage = () => {
+export const clearStorage = (gameStorage = localStorage) => {
     try {
         gameStorage.clear();
     } catch (error) {
