@@ -4,9 +4,6 @@ import {
     retrieveGameToken,
 } from './storageService';
 
-/* jest.mock('./storageService');
-let  */
-
 describe('Storage for tokens tests', () => {
     let dataStored = {};
     const testStorage = {
