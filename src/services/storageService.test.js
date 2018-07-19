@@ -7,7 +7,7 @@ import {
 describe('Storage for tokens tests', () => {
     let dataStored = {};
     const testStorage = {
-        getItem: element => JSON.stringify(dataStored), // eslint-disable-line no-unused-vars
+        getItem: () => JSON.stringify(dataStored),
         setItem: (element, value) => {
             dataStored = JSON.parse(value);
         },
