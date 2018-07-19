@@ -7,8 +7,8 @@ const ActionTextContainer = styled('span')`
     flex-direction: raw;
     justify-content: center;
     flex-wrap: wrap;
-    height: 100px;
-    line-height: 100px;
+    height: 80px;
+    line-height: 80px;
 `;
 
 const ActionText = props => (

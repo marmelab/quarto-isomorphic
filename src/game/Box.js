@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
+import Colors from '../ui/Colors';
 
 const BoxContainer = styled('div')(
     {
@@ -11,14 +12,14 @@ const BoxContainer = styled('div')(
         height: boxSize,
         width: boxSize,
         backgroundColor: winningBox
-            ? 'lightgreen'
+            ? Colors.winningBox
             : selected
-                ? '#80ffbf'
-                : 'lightblue',
+                ? Colors.selected
+                : Colors.boxBlue,
         ':hover': clickable
             ? {
                   cursor: 'pointer',
-                  background: 'rgba(0, 142, 198, 1)',
+                  background: Colors.buttonHover,
                   boxShadow: '2px 2px 2px 0 rgba(0, 0, 0, 0.3)',
                   position: 'relative',
                   top: context !== 'grid' ? '-10px' : '',

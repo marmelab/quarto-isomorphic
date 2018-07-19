@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import config from '../../config/config.dist';
+import config from '../../config/config.js';
 import { logFetchError } from './warningService';
 
 const fetchService = async url =>
@@ -7,10 +7,13 @@ const fetchService = async url =>
         .then(res => res.json())
         .catch(logFetchError);
 
-export const newGame = async numberOfPlayers => {
+export const newGame = async (numberOfPlayers, avatar) => {
     let url = config.apiUrl;
     if (numberOfPlayers === 1) {
         url += '/solo';
+    }
+    if (avatar) {
+        url += '?avatar=' + avatar;
     }
     const res = await fetchService(url);
     return {
@@ -19,14 +22,13 @@ export const newGame = async numberOfPlayers => {
     };
 };
 
-export const getGame = async (
-    idGame,
-    token = undefined,
-    register = undefined,
-) => {
-    const url = `${config.apiUrl}/${idGame}${
+export const getGame = async (idGame, token, register, avatar) => {
+    let url = `${config.apiUrl}/${idGame}${
         register ? '?register=1' : '?token=' + token
     }`;
+    if (avatar) {
+        url += '&avatar=' + avatar;
+    }
     const res = await fetchService(url);
     return {
         game: res,

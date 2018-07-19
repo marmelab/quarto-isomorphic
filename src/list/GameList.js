@@ -4,6 +4,8 @@ import styled from 'react-emotion';
 import Link from 'next/link';
 import Button from '../ui/Button';
 import LoadingZone from '../ui/LoadingZone';
+import avatarService from '../services/avatarService.js';
+import Colors from '../ui/Colors';
 
 const ListTitle = styled('span')(
     {
@@ -12,7 +14,7 @@ const ListTitle = styled('span')(
         textAlign: 'center',
         margin: '10px 4px',
         borderRadius: '3px',
-        color: 'white',
+        color: Colors.white,
         lineHeight: '50px',
     },
     ({ color }) => ({
@@ -27,6 +29,17 @@ const ListDataContainer = styled('div')`
     max-height: 500px;
     overflow-y: scroll;
     overflow-x: hidden;
+    max-height: 400px;
+`;
+
+const AvatarListContainer = styled('img')`
+    width: 28px;
+    height: auto;
+    vertical-align: middle;
+    background-color: ${Colors.white};
+    margin: 0px 4px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2);
 `;
 
 const ListContainer = styled('div')(
@@ -44,33 +57,49 @@ const ListContainer = styled('div')(
     }),
 );
 
+const GameButtonText = props => (
+    <div>
+        {`Game #${props.idGame} (${props.soloGame ? 'single' : 'dual'})`}
+        <AvatarListContainer
+            src={avatarService(props.playerOneName)}
+            alt={props.playerOneName}
+            title={props.playerOneName}
+        />
+        {props.playerTwoName && (
+            <AvatarListContainer
+                src={avatarService(props.playerTwoName)}
+                alt={props.playerTwoName}
+                title={props.playerTwoName}
+            />
+        )}
+    </div>
+);
+
+GameButtonText.propTypes = {
+    idGame: PropTypes.number.isRequired,
+    soloGame: PropTypes.bool.isRequired,
+    playerOneName: PropTypes.string,
+    playerTwoName: PropTypes.string,
+};
+
 class GameList extends Component {
     state = {
         list: [],
-        color: 'green',
+        color: Colors.green,
         register: false,
         loaded: false,
     };
 
-    static getDerivedStateFromProps = ({ list, title, color, register }) => {
-        return {
-            list: list,
-            title: title,
-            color: color,
-            register: register,
-            loaded: true,
-        };
-    };
+    static getDerivedStateFromProps = props => ({ ...props, loaded: true });
 
     render() {
-        const { title, list, loaded, color, register } = this.state;
+        const { title, list, loaded, color, register, avatar } = this.state;
         return (
             <ListContainer color={color}>
                 <ListTitle color={color}>{title}</ListTitle>
                 <LoadingZone loaded={loaded}>
                     {list.length > 0 ? (
                         <ListDataContainer>
-                            {' '}
                             {list.map((row, rowKey) => {
                                 return (
                                     <Link
@@ -80,13 +109,23 @@ class GameList extends Component {
                                             query: {
                                                 idGame: row.idGame,
                                                 register,
+                                                avatar: avatar,
                                                 token: row.token,
                                             },
                                         }}
                                     >
-                                        <Button>{`Game #${row.idGame} (${
-                                            row.soloGame ? 'single' : 'dual'
-                                        })`}</Button>
+                                        <Button>
+                                            <GameButtonText
+                                                idGame={row.idGame}
+                                                soloGame={row.soloGame}
+                                                playerOneName={
+                                                    row.playerOneName
+                                                }
+                                                playerTwoName={
+                                                    row.playerTwoName
+                                                }
+                                            />
+                                        </Button>
                                     </Link>
                                 );
                             })}
@@ -109,6 +148,7 @@ GameList.propTypes = {
     color: PropTypes.string.isRequired,
     loaded: PropTypes.bool,
     register: PropTypes.bool,
+    avatar: PropTypes.string,
 };
 
 export default GameList;

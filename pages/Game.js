@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Grid from '../src/game/Grid';
 import RemainingList from '../src/game/RemainingList';
 import ActionText from '../src/game/ActionText';
-import WinningText from '../src/game/WinningText';
+import PlayersText from '../src/game/PlayersText';
 import Link from 'next/link';
 import Button from '../src/ui/Button';
 import ButtonContainer from '../src/ui/ButtonContainer';
@@ -31,8 +31,13 @@ class Game extends Component {
         const { query } = props;
         let { game, token } =
             query && query.idGame
-                ? await getGame(query.idGame, query.token, query.register)
-                : await newGame(2);
+                ? await getGame(
+                      query.idGame,
+                      query.token,
+                      query.register,
+                      query.avatar,
+                  )
+                : await newGame(2, query ? query.avatar : null);
 
         return {
             idGame: game.idGame,
@@ -87,11 +92,14 @@ class Game extends Component {
                                 selectedPiece={game.selectedPiece}
                                 watchOnly={!!game.watch_only}
                             />
-                            <WinningText
+                            <PlayersText
                                 closed={game.closed}
                                 youWon={!!game.you_won}
                                 winnerId={game.winner_id}
                                 watchOnly={!!game.watch_only}
+                                avatarWinner={game.winnerName}
+                                avatarPlayerOne={game.playerOneName}
+                                avatarPlayerTwo={game.playerTwoName}
                             />
                             <RemainingList
                                 idGame={idGame}

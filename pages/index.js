@@ -5,9 +5,11 @@ import Button from '../src/ui/Button';
 import ButtonContainer from '../src/ui/ButtonContainer';
 import PropTypes from 'prop-types';
 import GameList from '../src/list/GameList';
+import NameForm from '../src/ui/NameForm';
 import Container from '../src/ui/Container';
 import { listGames } from '../src/services/gameService';
 import { retrieveGameTokenList } from '../src/services/storageService';
+import Colors from '../src/ui/Colors';
 
 const MultiListContainer = styled('div')`
     display: flex;
@@ -50,33 +52,47 @@ class HomeQuarto extends Component {
         });
     };
 
+    handleChangeAvatar = value => {
+        this.setState({ avatar: value });
+    };
+
     render() {
-        const { currentlist, openedlist, onlyWatchlist } = this.state;
+        const { currentlist, openedlist, onlyWatchlist, avatar } = this.state;
+
         return (
             <Container>
                 <div>
                     <img src="/static/boardTitle.jpg" alt="logo" />
                     <h2>Welcome to Quarto-isomorphic</h2>
                 </div>
+                <NameForm action={this.handleChangeAvatar} />
                 <ButtonContainer>
-                    <Link href="/Game">
+                    <Link
+                        href={{
+                            pathname: '/Game',
+                            query: {
+                                avatar: avatar,
+                            },
+                        }}
+                    >
                         <Button>Create a new game in duo</Button>
                     </Link>
                 </ButtonContainer>
                 <MultiListContainer>
                     <GameList
-                        color="green"
+                        color={Colors.green}
                         title="Continue a game"
                         list={currentlist}
                     />
                     <GameList
-                        color="blue"
+                        color={Colors.blue}
                         title="Join a game"
                         register={true}
                         list={openedlist}
+                        avatar={avatar}
                     />
                     <GameList
-                        color="purple"
+                        color={Colors.purple}
                         title="Watch a game"
                         list={onlyWatchlist}
                     />
