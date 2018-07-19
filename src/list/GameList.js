@@ -4,7 +4,7 @@ import styled from 'react-emotion';
 import Link from 'next/link';
 import Button from '../ui/Button';
 import LoadingZone from '../ui/LoadingZone';
-import config from '../../config/config.dist';
+import avatarService from '../services/avatarService.js';
 import Colors from '../ui/Colors';
 
 const ListTitle = styled('span')(
@@ -61,13 +61,13 @@ const GameButtonText = props => (
     <div>
         {`Game #${props.idGame} (${props.soloGame ? 'single' : 'dual'})`}
         <AvatarListContainer
-            src={config.avatarImgURL(props.playerOneName)}
+            src={avatarService(props.playerOneName)}
             alt={props.playerOneName}
             title={props.playerOneName}
         />
         {props.playerTwoName && (
             <AvatarListContainer
-                src={config.avatarImgURL(props.playerTwoName)}
+                src={avatarService(props.playerTwoName)}
                 alt={props.playerTwoName}
                 title={props.playerTwoName}
             />

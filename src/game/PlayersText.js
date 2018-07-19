@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
-import config from '../../config/config.dist';
+import avatarService from '../services/avatarService.js';
 import Colors from '../ui/Colors';
 
 const PlayersTextContainer = styled('span')(
@@ -49,18 +49,18 @@ export const getWinningText = props => {
 const PlayersText = props => (
     <PlayersTextContainer youWon={props.youWon} watchOnly={props.watchOnly}>
         {props.avatarWinner ? (
-            <AvatarContainer src={config.avatarImgURL(props.avatarWinner)} />
+            <AvatarContainer src={avatarService(props.avatarWinner)} />
         ) : (
             <AvatarLine>
                 <div>
                     <span>{props.avatarPlayerOne}</span>
                     <AvatarContainer
-                        src={config.avatarImgURL(props.avatarPlayerOne)}
+                        src={avatarService(props.avatarPlayerOne)}
                     />
                 </div>
                 <div>
                     <AvatarContainer
-                        src={config.avatarImgURL(props.avatarPlayerTwo)}
+                        src={avatarService(props.avatarPlayerTwo)}
                     />
                     <span>{props.avatarPlayerTwo}</span>
                 </div>

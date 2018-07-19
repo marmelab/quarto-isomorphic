@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'react-emotion';
 import PropTypes from 'prop-types';
-import config from '../../config/config.dist';
+import avatarService from '../services/avatarService.js';
 import Colors from './Colors';
 
 const AvatarContainer = styled('img')`
@@ -61,7 +61,7 @@ class NameForm extends Component {
                         onChange={this.handleChange}
                     />
                 </label>
-                <AvatarContainer src={config.avatarImgURL(this.state.value)} />
+                <AvatarContainer src={avatarService(this.state.value)} />
             </NameFormContainer>
         );
     }
