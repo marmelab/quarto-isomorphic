@@ -3,19 +3,22 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import Link from 'next/link';
 import Button from '../ui/Button';
+import LoadingZone from '../ui/LoadingZone';
 
-const ListTitle = styled('span')`
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    margin: 0 4px;
-    text-align: center;
-    margin: 10px 4px;
-    background-color: purple;
-    border-radius: 3px;
-    color: white;
-    line-height: 50px;
-`;
+const ListTitle = styled('span')(
+    {
+        fontSize: '20px',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        margin: '10px 4px',
+        borderRadius: '3px',
+        color: 'white',
+        lineHeight: '50px',
+    },
+    ({ color }) => ({
+        backgroundColor: color,
+    }),
+);
 
 const ListDataContainer = styled('div')`
     display: flex;
@@ -26,44 +29,64 @@ const ListDataContainer = styled('div')`
     overflow-x: hidden;
 `;
 
-const ListContainer = styled('div')`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border: 1px solid purple;
-    border-radius: 3px;
-`;
+const ListContainer = styled('div')(
+    {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'start',
+        border: '1px solid',
+        borderRadius: '3px',
+        margin: '0 4px',
+        width: '33%',
+    },
+    ({ color }) => ({
+        borderColor: color,
+    }),
+);
 
 class GameList extends Component {
     state = {
         list: [],
+        color: 'green',
+        register: false,
         loaded: false,
     };
 
-    static getDerivedStateFromProps = props => {
-        return { list: props.list, loaded: true };
+    static getDerivedStateFromProps = ({ list, title, color, register }) => {
+        return {
+            list: list,
+            title: title,
+            color: color,
+            register: register,
+            loaded: true,
+        };
     };
 
     render() {
-        const { list, loaded } = this.state;
+        const { title, list, loaded, color, register } = this.state;
         return (
-            <ListContainer>
-                <ListTitle>Watch a game</ListTitle>
-                {loaded ? (
-                    list.length > 0 ? (
+            <ListContainer color={color}>
+                <ListTitle color={color}>{title}</ListTitle>
+                <LoadingZone loaded={loaded}>
+                    {list.length > 0 ? (
                         <ListDataContainer>
                             {' '}
                             {list.map((row, rowKey) => {
                                 return (
                                     <Link
-                                        prefetch
                                         key={rowKey}
                                         href={{
                                             pathname: '/Game',
-                                            query: { idGame: row.idGame },
+                                            query: {
+                                                idGame: row.idGame,
+                                                register,
+                                                token: row.token,
+                                            },
                                         }}
                                     >
-                                        <Button>{`Game #${row.idGame}`}</Button>
+                                        <Button>{`Game #${row.idGame} (${
+                                            row.soloGame ? 'single' : 'dual'
+                                        })`}</Button>
                                     </Link>
                                 );
                             })}
@@ -73,12 +96,8 @@ class GameList extends Component {
                             <span>No game found !</span>
                             <span>Wait to someone to create one</span>
                         </ListDataContainer>
-                    )
-                ) : (
-                    <ListDataContainer>
-                        <span>Loading ...</span>
-                    </ListDataContainer>
-                )}
+                    )}
+                </LoadingZone>
             </ListContainer>
         );
     }
@@ -86,7 +105,10 @@ class GameList extends Component {
 
 GameList.propTypes = {
     list: PropTypes.array.isRequired,
+    title: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
     loaded: PropTypes.bool,
+    register: PropTypes.bool,
 };
 
 export default GameList;

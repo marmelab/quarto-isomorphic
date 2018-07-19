@@ -4,29 +4,36 @@ export const refreshGameForOpenedSockets = async (
     gameListenersList,
     idGame,
 ) => {
-    let emissionNumber = 0;
-    if (gameListenersList[idGame]) {
-        const game = await getGame(idGame);
-        gameListenersList[idGame].forEach(s => {
-            s.emit(`game${idGame}`, game);
-            emissionNumber++;
-        });
-    }
-    return emissionNumber;
+    if (!gameListenersList[idGame]) return;
+    gameListenersList[idGame].forEach(async s => {
+        let gameData = await getGame(idGame, s.token);
+        s.socket.emit(`game${idGame}`, gameData.game);
+    });
 };
 
-export const registerGameListener = (gameListenersList, socket, idGame) => {
+export const registerGameListener = (
+    gameListenersList,
+    socket,
+    idGame,
+    token,
+) => {
     return {
         ...gameListenersList,
-        [idGame]: (gameListenersList[idGame] || []).concat(socket),
+        [idGame]: (gameListenersList[idGame] || []).concat({
+            id: socket.id,
+            token: token,
+            socket,
+        }),
     };
 };
 
-export const unregisterGameListener = (gameListenersList, socket, idGame) => {
+export const unregisterGameListener = (gameListenersList, idSocket, idGame) => {
     if (!gameListenersList[idGame]) {
         return gameListenersList;
     }
-    const index = gameListenersList[idGame].indexOf(socket);
+    const index = gameListenersList[idGame].findIndex(element => {
+        return element.id == idSocket;
+    });
     if (index < 0) {
         return gameListenersList;
     }
@@ -47,11 +54,11 @@ export class ListenerService {
         this.list = list;
     }
 
-    register = (socket, idGame) => {
-        this.list = registerGameListener(this.list, socket, idGame);
+    register = (socket, idGame, token) => {
+        this.list = registerGameListener(this.list, socket, idGame, token);
     };
-    unregister = (socket, idGame) => {
-        this.list = unregisterGameListener(this.list, socket, idGame);
+    unregister = (idSocket, idGame) => {
+        this.list = unregisterGameListener(this.list, idSocket, idGame);
     };
     refreshGame = idGame => refreshGameForOpenedSockets(this.list, idGame);
 }

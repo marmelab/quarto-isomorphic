@@ -15,6 +15,8 @@ describe('GameList tests', () => {
         const { queryAllByText } = render(
             <GameList
                 list={[{ idGame: 27 }, { idGame: 28 }, { idGame: 29 }]}
+                title="Jean"
+                color="pink"
             />,
         );
 
@@ -31,7 +33,9 @@ describe('GameList tests', () => {
     });
 
     test('Test gameList 0 render', () => {
-        const { queryAllByText } = render(<GameList list={[]} />);
+        const { queryAllByText } = render(
+            <GameList list={[]} title="Michel" color="yellow" />,
+        );
 
         const testlist = queryAllByText('Game #', {
             exact: false,

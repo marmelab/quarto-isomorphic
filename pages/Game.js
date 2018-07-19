@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import Grid from '../src/game/Grid';
 import RemainingList from '../src/game/RemainingList';
 import ActionText from '../src/game/ActionText';
+import WinningText from '../src/game/WinningText';
 import Link from 'next/link';
 import Button from '../src/ui/Button';
+import ButtonContainer from '../src/ui/ButtonContainer';
 import Container from '../src/ui/Container';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import styled from 'react-emotion';
-import { getGame } from '../src/services/gameService';
+import { newGame, getGame } from '../src/services/gameService';
+import LoadingZone from '../src/ui/LoadingZone';
+import { storeGameToken } from '../src/services/storageService';
 
 const BoardContainer = styled('div')`
     height: 500px;
@@ -24,20 +28,31 @@ class Game extends Component {
     };
 
     static async getInitialProps(props) {
-        const game = await getGame(props.query.idGame);
+        const { query } = props;
+        let { game, token } =
+            query && query.idGame
+                ? await getGame(query.idGame, query.token, query.register)
+                : await newGame(2);
 
         return {
             idGame: game.idGame,
             game: game,
+            token: token || query.token,
             loaded: !!game.grid,
         };
     }
 
     componentDidMount = async () => {
         this.setState(this.props);
+        const { idGame, token } = this.props;
+
+        storeGameToken(idGame, token);
         this.socket = io();
-        this.socket.on(`game${this.props.game.idGame}`, this.handleGame);
-        this.socket.emit('listenGame', { id: this.props.game.idGame });
+        this.socket.on(`game${idGame}`, this.handleGame);
+        this.socket.emit('listenGame', {
+            id: idGame,
+            token: token,
+        });
     };
 
     componentWillUnmount = async () => {
@@ -50,14 +65,16 @@ class Game extends Component {
     };
 
     render() {
-        const { game, loaded } = this.state;
+        const { idGame, token, game, loaded } = this.state;
         return (
             <Container>
-                {loaded ? (
-                    game.grid ? (
+                <LoadingZone loaded={loaded}>
+                    {game.grid ? (
                         <BoardContainer>
-                            <span>{game.idGame}</span>
+                            <span>{idGame}</span>
                             <Grid
+                                idGame={idGame}
+                                token={token}
                                 grid={game.grid}
                                 goodPlaces={game.winningPlaces}
                                 winningLine={game.winningLine}
@@ -70,7 +87,15 @@ class Game extends Component {
                                 selectedPiece={game.selectedPiece}
                                 watchOnly={!!game.watch_only}
                             />
+                            <WinningText
+                                closed={game.closed}
+                                youWon={!!game.you_won}
+                                winnerId={game.winner_id}
+                                watchOnly={!!game.watch_only}
+                            />
                             <RemainingList
+                                idGame={idGame}
+                                token={token}
                                 list={game.allPieces}
                                 selectedPiece={game.selectedPiece}
                                 badPieces={
@@ -88,15 +113,13 @@ class Game extends Component {
                             <span>Game not found !</span>
                             <span>Go choose another</span>
                         </BoardContainer>
-                    )
-                ) : (
-                    <BoardContainer>
-                        <span>Loading ...</span>
-                    </BoardContainer>
-                )}
-                <Link href="/">
-                    <Button>Back to home</Button>
-                </Link>
+                    )}
+                </LoadingZone>
+                <ButtonContainer>
+                    <Link href="/">
+                        <Button>Back to home</Button>
+                    </Link>
+                </ButtonContainer>
             </Container>
         );
     }
@@ -105,6 +128,7 @@ class Game extends Component {
 Game.propTypes = {
     idGame: PropTypes.number.isRequired,
     game: PropTypes.object.isRequired,
+    token: PropTypes.string,
     loaded: PropTypes.bool,
 };
 

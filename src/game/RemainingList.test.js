@@ -8,6 +8,7 @@ describe('RemainingList tests', () => {
     test('Test remainingList 3 with selected 2 render', () => {
         const { getAllByLabelText } = render(
             <RemainingList
+                idGame={100}
                 list={{
                     1: { id: 1, used: false },
                     2: { id: 2, used: false },
@@ -33,6 +34,7 @@ describe('RemainingList tests', () => {
     test('Test remainingList 16 no selected render', () => {
         const { getAllByLabelText, queryAllByLabelText } = render(
             <RemainingList
+                idGame={100}
                 list={{
                     1: { id: 1, used: false },
                     2: { id: 2, used: false },

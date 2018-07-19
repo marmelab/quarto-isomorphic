@@ -11,50 +11,51 @@ jest.mock('./gameService');
 describe('Ws listeners tests', () => {
     test('Test unregisterGameListener empty', () => {
         let list = {};
-        list = unregisterGameListener(list, 'anySocket', 10);
+        list = unregisterGameListener(list, '123', 10);
 
         expect(list).toEqual({});
     });
 
     test('Test registerGameListener first', () => {
         let list = {};
-        list = registerGameListener(list, 'anySocket', 10);
+        list = registerGameListener(list, { id: '123' }, 10);
 
-        expect(list[10]).toEqual(['anySocket']);
+        expect(list[10][0].id).toEqual('123');
     });
 
     test('Test registerGameListener fourth and one', () => {
         let list = {};
-        list = registerGameListener(list, 'FirstSocket', 9);
-        list = registerGameListener(list, 'SecondSocket', 9);
-        list = registerGameListener(list, 'ThridSocket', 9);
-        list = registerGameListener(list, 'SoloSocket', 11);
-        list = registerGameListener(list, 'FourthSocket', 9);
+        list = registerGameListener(list, { id: '123' }, 9);
+        list = registerGameListener(list, { id: '124' }, 9);
+        list = registerGameListener(list, { id: '125' }, 9);
+        list = registerGameListener(list, { id: '126' }, 11);
+        list = registerGameListener(list, { id: '127' }, 9);
 
         expect(list[9].length).toEqual(4);
-        expect(list[11]).toEqual(['SoloSocket']);
+        expect(list[11][0].id).toEqual('126');
     });
 
     test('Test unregisterGameListener not empty', () => {
         let list = {};
-        list = registerGameListener(list, 'FirstSocket', 7);
-        list = registerGameListener(list, 'SecondSocket', 7);
-        list = registerGameListener(list, 'ThridSocket', 7);
-        list = registerGameListener(list, 'SoloSocket', 14);
-        list = registerGameListener(list, 'FourthSocket', 7);
+        list = registerGameListener(list, { id: '123' }, 7);
+        list = registerGameListener(list, { id: '124' }, 7);
+        list = registerGameListener(list, { id: '125' }, 7);
+        list = registerGameListener(list, { id: '126' }, 14);
+        list = registerGameListener(list, { id: '127' }, 7);
 
         expect(list[7].length).toEqual(4);
 
-        list = unregisterGameListener(list, 'ThridSocket', 7);
+        list = unregisterGameListener(list, '125', 7);
 
         expect(list[7].length).toEqual(3);
     });
 
     test('Test refreshGameForOpenedSockets', async () => {
         let list = {};
-        getGame.mockImplementation(i => {
-            return { idGame: i };
+        getGame.mockImplementation((i, t) => {
+            return { idGame: i, token: t };
         });
+        getGame.mockClear();
 
         list = registerGameListener(
             list,
@@ -77,57 +78,56 @@ describe('Ws listeners tests', () => {
             114,
         );
 
-        const nbEmit = await refreshGameForOpenedSockets(list, 17);
+        await refreshGameForOpenedSockets(list, 17);
+        expect(getGame).toHaveBeenCalledTimes(3);
 
-        expect(nbEmit).toEqual(3);
+        await refreshGameForOpenedSockets(list, 114);
+        expect(getGame).toHaveBeenCalledTimes(4);
 
-        const nbEmit2 = await refreshGameForOpenedSockets(list, 114);
-        expect(nbEmit2).toEqual(1);
+        await refreshGameForOpenedSockets(list, 1814);
+        expect(getGame).toHaveBeenCalledTimes(4);
 
-        const nbEmit3 = await refreshGameForOpenedSockets(list, 1814);
-        expect(nbEmit3).toEqual(0);
-
-        expect(getGame).toHaveBeenCalledWith(17);
-        expect(getGame).toHaveBeenCalledWith(114);
+        expect(getGame).toHaveBeenCalledWith(17, undefined);
+        expect(getGame).toHaveBeenCalledWith(114, undefined);
     });
 
     test('Test factory unregisterGameListener empty', () => {
         const listenerService = new ListenerService({});
-        listenerService.unregister('anySocket', 10);
+        listenerService.unregister('127', 10);
 
         expect(listenerService.list).toEqual({});
     });
 
     test('Test factory registerGameListener first', () => {
         const listenerService = new ListenerService({});
-        listenerService.register('anySocket', 10);
+        listenerService.register({ id: '127' }, 10);
 
-        expect(listenerService.list[10]).toEqual(['anySocket']);
+        expect(listenerService.list[10][0].id).toEqual('127');
     });
 
     test('Test factory registerGameListener fourth and one', () => {
         const listenerService = new ListenerService({});
-        listenerService.register('FirstSocket', 9);
-        listenerService.register('SecondSocket', 9);
-        listenerService.register('ThridSocket', 9);
-        listenerService.register('SoloSocket', 11);
-        listenerService.register('FourthSocket', 9);
+        listenerService.register({ id: '234' }, 9);
+        listenerService.register({ id: '235' }, 9);
+        listenerService.register({ id: '236' }, 9);
+        listenerService.register({ id: '237' }, 11);
+        listenerService.register({ id: '238' }, 9);
 
         expect(listenerService.list[9].length).toEqual(4);
-        expect(listenerService.list[11]).toEqual(['SoloSocket']);
+        expect(listenerService.list[11][0].id).toEqual('237');
     });
 
     test('Test factory unregisterGameListener not empty', () => {
         const listenerService = new ListenerService({});
-        listenerService.register('FirstSocket', 7);
-        listenerService.register('SecondSocket', 7);
-        listenerService.register('ThridSocket', 7);
-        listenerService.register('SoloSocket', 14);
-        listenerService.register('FourthSocket', 7);
+        listenerService.register({ id: '234' }, 7);
+        listenerService.register({ id: '235' }, 7);
+        listenerService.register({ id: '236' }, 7);
+        listenerService.register({ id: '237' }, 14);
+        listenerService.register({ id: '238' }, 7);
 
         expect(listenerService.list[7].length).toEqual(4);
 
-        listenerService.unregister('ThridSocket', 7);
+        listenerService.unregister('236', 7);
 
         expect(listenerService.list[7].length).toEqual(3);
     });
@@ -137,23 +137,23 @@ describe('Ws listeners tests', () => {
         getGame.mockImplementation(i => {
             return { idGame: i };
         });
+        getGame.mockClear();
 
-        listenerService.register({ id: 'FirstSocket', emit: jest.fn() }, 17);
-        listenerService.register({ id: 'SecondSocket', emit: jest.fn() }, 17);
-        listenerService.register({ id: 'ThridSocket', emit: jest.fn() }, 17);
-        listenerService.register({ id: 'SoloSocket', emit: jest.fn() }, 114);
+        listenerService.register({ id: '234', emit: jest.fn() }, 17);
+        listenerService.register({ id: '235', emit: jest.fn() }, 17);
+        listenerService.register({ id: '236', emit: jest.fn() }, 17);
+        listenerService.register({ id: '238', emit: jest.fn() }, 114);
 
-        const nbEmit = await listenerService.refreshGame(17);
+        await listenerService.refreshGame(17);
+        expect(getGame).toHaveBeenCalledTimes(3);
 
-        expect(nbEmit).toEqual(3);
+        await listenerService.refreshGame(114);
+        expect(getGame).toHaveBeenCalledTimes(4);
 
-        const nbEmit2 = await listenerService.refreshGame(114);
-        expect(nbEmit2).toEqual(1);
+        await listenerService.refreshGame(1814);
+        expect(getGame).toHaveBeenCalledTimes(4);
 
-        const nbEmit3 = await listenerService.refreshGame(1814);
-        expect(nbEmit3).toEqual(0);
-
-        expect(getGame).toHaveBeenCalledWith(17);
-        expect(getGame).toHaveBeenCalledWith(114);
+        expect(getGame).toHaveBeenCalledWith(17, undefined);
+        expect(getGame).toHaveBeenCalledWith(114, undefined);
     });
 });
