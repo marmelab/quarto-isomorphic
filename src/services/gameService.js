@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch';
-import config from '../../config/config.dist';
+import config from '../../config/config.js';
 import { logFetchError } from './warningService';
 
 const fetchService = async url =>

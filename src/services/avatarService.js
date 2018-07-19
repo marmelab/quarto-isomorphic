@@ -1,3 +1,3 @@
-import config from '../../config/config.dist';
+import config from '../../config/config.js';
 
 export default name => `${config.avatarImgURL}${name}${config.avatarImgFormat}`;
