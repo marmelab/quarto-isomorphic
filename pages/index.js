@@ -20,6 +20,11 @@ const MultiListContainer = styled('div')`
 `;
 
 class HomeQuarto extends Component {
+    constructor(props) {
+        super(props);
+        this.state = props;
+    }
+
     state = {
         currentlist: [],
         openedlist: [],
@@ -28,20 +33,13 @@ class HomeQuarto extends Component {
     };
 
     static async getInitialProps() {
-        const currentlist = await listGames('current');
-        const openedlist = await listGames('opened');
-        const onlyWatchlist = await listGames('onlywatch');
         return {
-            currentlist: Array.isArray(currentlist) ? currentlist : [],
-            openedlist: Array.isArray(openedlist) ? openedlist : [],
-            onlyWatchlist: Array.isArray(onlyWatchlist) ? onlyWatchlist : [],
-            loaded: !!currentlist && !!openedlist && !!onlyWatchlist,
+            currentlist: [],
+            openedlist: [],
+            onlyWatchlist: [],
+            loaded: true,
         };
     }
-
-    static getDerivedStateFromProps = props => {
-        return props;
-    };
 
     componentDidMount = async () => {
         const tokenList = retrieveGameTokenList();
@@ -62,7 +60,6 @@ class HomeQuarto extends Component {
 
     render() {
         const { currentlist, openedlist, onlyWatchlist, avatar } = this.state;
-
         return (
             <Container>
                 <div>

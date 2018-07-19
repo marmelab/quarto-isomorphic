@@ -13,7 +13,7 @@ export const newGame = async (numberOfPlayers, avatar) => {
         url += '/solo';
     }
     if (avatar) {
-        url += '?avatar=' + avatar;
+        url += '?name=' + avatar;
     }
     const res = await fetchService(url);
     return {
@@ -24,10 +24,10 @@ export const newGame = async (numberOfPlayers, avatar) => {
 
 export const getGame = async (idGame, token, register, avatar) => {
     let url = `${config.apiUrl}/${idGame}${
-        register ? '?register=1' : '?token=' + token
+        register == true ? '?register=1' : '?token=' + token
     }`;
     if (avatar) {
-        url += '&avatar=' + avatar;
+        url += '&name=' + avatar;
     }
     const res = await fetchService(url);
     return {

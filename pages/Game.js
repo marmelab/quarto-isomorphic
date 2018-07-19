@@ -22,6 +22,11 @@ const BoardContainer = styled('div')`
 `;
 
 class Game extends Component {
+    constructor(props) {
+        super(props);
+        this.state = props;
+    }
+
     state = {
         game: {},
         loaded: false,
@@ -34,7 +39,7 @@ class Game extends Component {
                 ? await getGame(
                       query.idGame,
                       query.token,
-                      query.register,
+                      JSON.parse(query.register),
                       query.avatar,
                   )
                 : await newGame(2, query ? query.avatar : null);
@@ -46,10 +51,6 @@ class Game extends Component {
             loaded: !!game.grid,
         };
     }
-
-    static getDerivedStateFromProps = props => {
-        return props;
-    };
 
     componentDidMount = async () => {
         this.setState(this.props);
