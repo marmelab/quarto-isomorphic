@@ -1,0 +1,15 @@
+export default {
+    white: 'white',
+    buttonBlue: '#0199d9',
+    green: 'green',
+    blue: 'blue',
+    red: 'red',
+    purple: 'purple',
+    textBlue: '#00a6e8',
+    boxBlue: 'lightblue',
+    winningBox: 'lightgreen',
+    selected: '#80ffbf',
+    buttonHover: 'rgba(0, 142, 198, 1)',
+    buttonBorder: '#018dc4',
+    buttonBorderHover: '#007cad',
+};

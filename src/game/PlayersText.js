@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
+import config from '../../config/config.dist';
+import Colors from '../ui/Colors';
 
 const PlayersTextContainer = styled('span')(
     {
@@ -12,7 +14,11 @@ const PlayersTextContainer = styled('span')(
         textAlign: 'center',
     },
     props => ({
-        color: props.youWon ? 'green' : props.watchOnly ? 'blue' : 'red',
+        color: props.youWon
+            ? Colors.green
+            : props.watchOnly
+                ? Colors.blue
+                : Colors.red,
     }),
 );
 
@@ -23,33 +29,38 @@ const AvatarContainer = styled('img')`
 `;
 
 const AvatarLine = styled('div')`
-    color: #00a6e8;
+    color: ${Colors.textBlue};
     display: flex;
     flex-direction: row;
     justify-content: space-around;
 `;
 
+export const getWinningText = props => {
+    if (!props.closed) return '';
+    if (props.youWon) {
+        return 'Congratulation, you won !!';
+    }
+    if (props.avatarWinner) {
+        return `${props.avatarWinner} won.`;
+    }
+    return "It's a draw";
+};
+
 const PlayersText = props => (
     <PlayersTextContainer youWon={props.youWon} watchOnly={props.watchOnly}>
         {props.avatarWinner ? (
-            <AvatarContainer
-                src={`https://robohash.org/${props.avatarWinner}.png`}
-            />
+            <AvatarContainer src={config.avatarImgURL(props.avatarWinner)} />
         ) : (
             <AvatarLine>
                 <div>
                     <span>{props.avatarPlayerOne}</span>
                     <AvatarContainer
-                        src={`https://robohash.org/${
-                            props.avatarPlayerOne
-                        }.png`}
+                        src={config.avatarImgURL(props.avatarPlayerOne)}
                     />
                 </div>
                 <div>
                     <AvatarContainer
-                        src={`https://robohash.org/${
-                            props.avatarPlayerTwo
-                        }.png`}
+                        src={config.avatarImgURL(props.avatarPlayerTwo)}
                     />
                     <span>{props.avatarPlayerTwo}</span>
                 </div>
@@ -77,14 +88,3 @@ PlayersText.propTypes = {
 };
 
 export default PlayersText;
-
-const getWinningText = props => {
-    if (!props.closed) return '';
-    if (props.youWon) {
-        return 'Congratulation, you won !!';
-    }
-    if (props.avatarWinner) {
-        return `${props.avatarWinner} won.`;
-    }
-    return "It's a draw";
-};

@@ -35,12 +35,9 @@ class Game extends Component {
                       query.idGame,
                       query.token,
                       query.register,
-                      props.query.avatar,
+                      query.avatar,
                   )
-                : await newGame(
-                      2,
-                      props.query ? props.query.avatar : undefined,
-                  );
+                : await newGame(2, query ? query.avatar : null);
 
         return {
             idGame: game.idGame,

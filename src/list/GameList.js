@@ -4,6 +4,8 @@ import styled from 'react-emotion';
 import Link from 'next/link';
 import Button from '../ui/Button';
 import LoadingZone from '../ui/LoadingZone';
+import config from '../../config/config.dist';
+import Colors from '../ui/Colors';
 
 const ListTitle = styled('span')(
     {
@@ -12,7 +14,7 @@ const ListTitle = styled('span')(
         textAlign: 'center',
         margin: '10px 4px',
         borderRadius: '3px',
-        color: 'white',
+        color: Colors.white,
         lineHeight: '50px',
     },
     ({ color }) => ({
@@ -34,7 +36,7 @@ const AvatarListContainer = styled('img')`
     width: 28px;
     height: auto;
     vertical-align: middle;
-    background-color: white;
+    background-color: ${Colors.white};
     margin: 0px 4px;
     border-radius: 3px;
     box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2);
@@ -55,30 +57,40 @@ const ListContainer = styled('div')(
     }),
 );
 
+const GameButtonText = props => (
+    <div>
+        {`Game #${props.idGame} (${props.soloGame ? 'single' : 'dual'})`}
+        <AvatarListContainer
+            src={config.avatarImgURL(props.playerOneName)}
+            alt={props.playerOneName}
+            title={props.playerOneName}
+        />
+        {props.playerTwoName && (
+            <AvatarListContainer
+                src={config.avatarImgURL(props.playerTwoName)}
+                alt={props.playerTwoName}
+                title={props.playerTwoName}
+            />
+        )}
+    </div>
+);
+
+GameButtonText.propTypes = {
+    idGame: PropTypes.number.isRequired,
+    soloGame: PropTypes.bool.isRequired,
+    playerOneName: PropTypes.string,
+    playerTwoName: PropTypes.string,
+};
+
 class GameList extends Component {
     state = {
         list: [],
-        color: 'green',
+        color: Colors.green,
         register: false,
         loaded: false,
     };
 
-    static getDerivedStateFromProps = ({
-        list,
-        title,
-        color,
-        register,
-        avatar,
-    }) => {
-        return {
-            list: list,
-            title: title,
-            color: color,
-            register: register,
-            avatar: avatar,
-            loaded: true,
-        };
-    };
+    static getDerivedStateFromProps = props => ({ ...props, loaded: true });
 
     render() {
         const { title, list, loaded, color, register, avatar } = this.state;
@@ -88,7 +100,6 @@ class GameList extends Component {
                 <LoadingZone loaded={loaded}>
                     {list.length > 0 ? (
                         <ListDataContainer>
-                            {' '}
                             {list.map((row, rowKey) => {
                                 return (
                                     <Link
@@ -104,25 +115,16 @@ class GameList extends Component {
                                         }}
                                     >
                                         <Button>
-                                            {`Game #${row.idGame} (${
-                                                row.soloGame ? 'single' : 'dual'
-                                            })`}
-                                            <AvatarListContainer
-                                                src={`https://robohash.org/${
+                                            <GameButtonText
+                                                idGame={row.idGame}
+                                                soloGame={row.soloGame}
+                                                playerOneName={
                                                     row.playerOneName
-                                                }.png`}
-                                                alt={row.playerOneName}
-                                                title={row.playerOneName}
+                                                }
+                                                playerTwoName={
+                                                    row.playerTwoName
+                                                }
                                             />
-                                            {row.playerTwoName && (
-                                                <AvatarListContainer
-                                                    src={`https://robohash.org/${
-                                                        row.playerTwoName
-                                                    }.png`}
-                                                    alt={row.playerTwoName}
-                                                    title={row.playerTwoName}
-                                                />
-                                            )}
                                         </Button>
                                     </Link>
                                 );

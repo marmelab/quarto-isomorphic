@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'react-emotion';
 import PropTypes from 'prop-types';
+import config from '../../config/config.dist';
+import Colors from './Colors';
 
 const AvatarContainer = styled('img')`
     width: 50px;
     height: auto;
     vertical-align: middle;
-    background-color: white;
+    background-color: ${Colors.white};
     margin: 0px 4px;
     border-radius: 3px;
     box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2);
@@ -59,9 +61,7 @@ class NameForm extends Component {
                         onChange={this.handleChange}
                     />
                 </label>
-                <AvatarContainer
-                    src={`https://robohash.org/${this.state.value}.png`}
-                />
+                <AvatarContainer src={config.avatarImgURL(this.state.value)} />
             </NameFormContainer>
         );
     }

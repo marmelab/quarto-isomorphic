@@ -22,12 +22,7 @@ export const newGame = async (numberOfPlayers, avatar) => {
     };
 };
 
-export const getGame = async (
-    idGame,
-    token = undefined,
-    register = undefined,
-    avatar = undefined,
-) => {
+export const getGame = async (idGame, token, register, avatar) => {
     let url = `${config.apiUrl}/${idGame}${
         register ? '?register=1' : '?token=' + token
     }`;
