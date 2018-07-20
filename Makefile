@@ -20,13 +20,16 @@ lint: ## Inpect code syntax and writing rules
 
 deploy: ## Deploy website on Web Server (Need an sshname parameter for distant connection)
 	zip -r quarto.zip zipfile server.js config pages src static package.json build devServer.js
-	ssh $(sshname) mkdir -p quarto-isomorphic
-	ssh $(sshname) sudo service quartoisomorphic stop
 	scp -v quarto.zip $(sshname):~/quarto-isomorphic/
-	ssh $(sshname) 'unzip -uo ~/quarto-isomorphic/quarto.zip -d ~/quarto-isomorphic/'
-	ssh $(sshname) 'rm -f ~/quarto-isomorphic/quarto.zip'
+	ssh $(sshname) ' \
+		mkdir -p quarto-isomorphic; \
+		sudo service quartoisomorphic stop; \
+		unzip -uo ~/quarto-isomorphic/quarto.zip -d ~/quarto-isomorphic/; \
+		rm -f ~/quarto-isomorphic/quarto.zip; \
+		cd quarto-isomorphic/; \
+		npm install; \
+		npm run build; \
+		sudo service quartoisomorphic start; \
+	'
 	rm -f quarto.zip
-	ssh $(sshname) 'cd quarto-isomorphic/ && npm install'
-	ssh $(sshname) 'cd quarto-isomorphic/ && npm run build'
-	ssh $(sshname) sudo service quartoisomorphic start
 	
