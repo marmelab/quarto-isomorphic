@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Box from './Box';
-import { selectPiece } from '../services/gameService';
+import { selectPiece, askAIMove } from '../services/gameService';
 
 const RemainingBox = props => {
     const {
@@ -12,10 +12,12 @@ const RemainingBox = props => {
         clickable,
         token,
         badPiece,
+        soloGame,
     } = props;
     const handleClick = async () => {
         if (idGame && boxValue > 0 && enabled && !selected && clickable) {
             await selectPiece(idGame, boxValue, token);
+            if (soloGame) await askAIMove(idGame);
         }
     };
     return (
@@ -45,6 +47,7 @@ RemainingBox.propTypes = {
     clickable: PropTypes.bool,
     selected: PropTypes.bool,
     badPiece: PropTypes.bool,
+    soloGame: PropTypes.bool,
 };
 
 export default RemainingBox;

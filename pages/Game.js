@@ -42,7 +42,10 @@ class Game extends Component {
                       JSON.parse(query.register),
                       query.avatar,
                   )
-                : await newGame(2, query ? query.avatar : null);
+                : await newGame(
+                      JSON.parse(query.solo) ? 1 : 2,
+                      query ? query.avatar : null,
+                  );
 
         return {
             idGame: game.idGame,
@@ -119,6 +122,7 @@ class Game extends Component {
                                 }
                                 readOnly={game.locked}
                                 activeZone={game.selectedPiece === 0}
+                                soloGame={game.soloGame}
                             />
                         </BoardContainer>
                     ) : (
