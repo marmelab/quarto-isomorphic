@@ -14,8 +14,6 @@ export const storeGameToken = (idGame, token, gameStorage = localStorage) => {
 
 export const retrieveGameTokenList = (gameStorage = localStorage) => {
     try {
-        //clearStorage();
-        //console.log('clearStorage');
         const value = gameStorage.getItem(tokenStorage);
         if (value !== null) {
             return JSON.parse(value);

@@ -14,11 +14,8 @@ const RowContainer = styled('div')`
     justify-content: center;
 `;
 
-const positionInclude = (placesList, x, y) => {
-    return placesList.some(place => {
-        return place[0] == y && place[1] == x;
-    });
-};
+const positionInclude = (placesList, x, y) =>
+    placesList.some(place => place[0] === y && place[1] === x);
 
 const Grid = props => (
     <GridContainer>

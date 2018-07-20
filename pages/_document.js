@@ -7,7 +7,6 @@ export default class MyDocument extends Document {
         const page = ctx.renderPage();
         const styles = extractCritical(page.html);
         return { ...page, ...styles };
-        //return { ...(await Document.getInitialProps(ctx))};
     }
 
     render() {
