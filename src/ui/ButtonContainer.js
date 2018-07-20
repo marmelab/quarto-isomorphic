@@ -1,7 +1,7 @@
 import styled from 'react-emotion';
 
 const ButtonContainer = styled('div')`
-    width: 300px;
+    width: 250px;
     align-self: center;
 `;
 

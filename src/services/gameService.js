@@ -52,3 +52,8 @@ export const selectPiece = async (idGame, piece, token) => {
     const url = `${config.apiUrl}/${idGame}/select/${piece}?token=${token}`;
     return await fetchService(url);
 };
+
+export const askAIMove = async idGame => {
+    const url = `${config.apiUrl}/${idGame}/submit`;
+    return await fetchService(url);
+};

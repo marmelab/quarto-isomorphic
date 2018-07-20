@@ -21,6 +21,8 @@ const BoardContainer = styled('div')`
     text-align: center;
 `;
 
+const getBooleanFromQueryString = argument => argument === 'true';
+
 class Game extends Component {
     constructor(props) {
         super(props);
@@ -39,10 +41,13 @@ class Game extends Component {
                 ? await getGame(
                       query.idGame,
                       query.token,
-                      JSON.parse(query.register),
+                      getBooleanFromQueryString(query.register),
                       query.avatar,
                   )
-                : await newGame(2, query ? query.avatar : null);
+                : await newGame(
+                      getBooleanFromQueryString(query.solo) ? 1 : 2,
+                      query ? query.avatar : null,
+                  );
 
         return {
             idGame: game.idGame,
@@ -119,6 +124,7 @@ class Game extends Component {
                                 }
                                 readOnly={game.locked}
                                 activeZone={game.selectedPiece === 0}
+                                soloGame={game.soloGame}
                             />
                         </BoardContainer>
                     ) : (

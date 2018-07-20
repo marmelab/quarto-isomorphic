@@ -19,6 +19,13 @@ const MultiListContainer = styled('div')`
     width: 100%;
 `;
 
+const CreateGameContainer = styled('div')`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+`;
+
 class HomeQuarto extends Component {
     constructor(props) {
         super(props);
@@ -67,18 +74,33 @@ class HomeQuarto extends Component {
                     <h2>Welcome to Quarto-isomorphic</h2>
                 </div>
                 <NameForm action={this.handleChangeAvatar} />
-                <ButtonContainer>
-                    <Link
-                        href={{
-                            pathname: '/Game',
-                            query: {
-                                avatar: avatar,
-                            },
-                        }}
-                    >
-                        <Button>Create a new game in duo</Button>
-                    </Link>
-                </ButtonContainer>
+                <CreateGameContainer>
+                    <ButtonContainer>
+                        <Link
+                            href={{
+                                pathname: '/Game',
+                                query: {
+                                    avatar: avatar,
+                                },
+                            }}
+                        >
+                            <Button>Create a new game in duo</Button>
+                        </Link>
+                    </ButtonContainer>
+                    <ButtonContainer>
+                        <Link
+                            href={{
+                                pathname: '/Game',
+                                query: {
+                                    avatar: avatar,
+                                    solo: true,
+                                },
+                            }}
+                        >
+                            <Button>Create a new game in solo</Button>
+                        </Link>
+                    </ButtonContainer>
+                </CreateGameContainer>
                 <MultiListContainer>
                     <GameList
                         color={Colors.green}

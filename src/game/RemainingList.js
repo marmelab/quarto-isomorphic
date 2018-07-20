@@ -29,6 +29,7 @@ const RemainingList = props => (
                             props.badPieces.indexOf(props.list[pieceKey].id) >=
                             0
                         }
+                        soloGame={props.soloGame}
                     />
                 );
             }
@@ -48,6 +49,7 @@ RemainingList.propTypes = {
     selectedPiece: PropTypes.number,
     activeZone: PropTypes.bool,
     badPieces: PropTypes.array.isRequired,
+    soloGame: PropTypes.bool,
 };
 
 export default RemainingList;
