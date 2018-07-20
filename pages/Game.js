@@ -21,6 +21,8 @@ const BoardContainer = styled('div')`
     text-align: center;
 `;
 
+const getBooleanFromQueryString = argument => argument === 'true';
+
 class Game extends Component {
     constructor(props) {
         super(props);
@@ -39,11 +41,11 @@ class Game extends Component {
                 ? await getGame(
                       query.idGame,
                       query.token,
-                      query.register && JSON.parse(query.register),
+                      getBooleanFromQueryString(query.register),
                       query.avatar,
                   )
                 : await newGame(
-                      query.solo && JSON.parse(query.solo) ? 1 : 2,
+                      getBooleanFromQueryString(query.solo) ? 1 : 2,
                       query ? query.avatar : null,
                   );
 
