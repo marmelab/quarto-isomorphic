@@ -98,7 +98,7 @@ class GameList extends Component {
             <ListContainer color={color}>
                 <ListTitle color={color}>{title}</ListTitle>
                 <LoadingZone loaded={loaded}>
-                    {list.length > 0 ? (
+                    {list && list.length > 0 ? (
                         <ListDataContainer>
                             {list.map((row, rowKey) => {
                                 return (
@@ -117,7 +117,7 @@ class GameList extends Component {
                                         <Button>
                                             <GameButtonText
                                                 idGame={row.idGame}
-                                                soloGame={row.soloGame}
+                                                soloGame={!!row.soloGame}
                                                 playerOneName={
                                                     row.playerOneName
                                                 }
