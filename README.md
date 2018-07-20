@@ -35,3 +35,12 @@ Inspect source code and writing rules
 ``` bash
 make lint
 ```
+
+## Deploy
+
+Deploy project on server
+  -Add ssh parameter to specify distant connection name (like make deploy sshname=quartoServer)
+
+```
+make deploy
+```
