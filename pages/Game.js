@@ -39,11 +39,11 @@ class Game extends Component {
                 ? await getGame(
                       query.idGame,
                       query.token,
-                      JSON.parse(query.register),
+                      query.register && JSON.parse(query.register),
                       query.avatar,
                   )
                 : await newGame(
-                      JSON.parse(query.solo) ? 1 : 2,
+                      query.solo && JSON.parse(query.solo) ? 1 : 2,
                       query ? query.avatar : null,
                   );
 
