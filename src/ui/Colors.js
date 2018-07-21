@@ -12,4 +12,6 @@ export default {
     buttonHover: 'rgba(0, 142, 198, 1)',
     buttonBorder: '#018dc4',
     buttonBorderHover: '#007cad',
+    badBox: 'orange',
+    goodBox: 'lightgreen',
 };

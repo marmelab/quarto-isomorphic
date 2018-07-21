@@ -8,14 +8,27 @@ const BoxContainer = styled('div')(
         padding: '2px',
         margin: '2px',
     },
-    ({ boxSize, winningBox, selected, clickable, context }) => ({
+    ({
+        boxSize,
+        winningBox,
+        selected,
+        clickable,
+        context,
+        imgNumber,
+        badBox,
+        goodBox,
+    }) => ({
         height: boxSize,
         width: boxSize,
         backgroundColor: winningBox
             ? Colors.winningBox
             : selected
                 ? Colors.selected
-                : Colors.boxBlue,
+                : badBox && clickable
+                    ? Colors.badBox
+                    : goodBox && clickable
+                        ? Colors.goodBox
+                        : Colors.boxBlue,
         ':hover': clickable
             ? {
                   cursor: 'pointer',
@@ -24,6 +37,11 @@ const BoxContainer = styled('div')(
                   position: 'relative',
                   top: context !== 'grid' ? '-10px' : '',
                   transition: 'all 200ms cubic-bezier(0.42, 0, 0.58, 1)',
+                  backgroundImage:
+                      imgNumber > 0
+                          ? `url("/static/pieceImage${imgNumber}.png");`
+                          : '',
+                  backgroundSize: 'contain',
               }
             : {},
     }),
@@ -39,10 +57,13 @@ const Box = ({
     boxSize,
     boxValue,
     selected,
+    selectedPiece,
     clickable,
     handleClick,
     context,
     winningBox,
+    goodBox,
+    badBox,
 }) => (
     <BoxContainer
         aria-label={label}
@@ -53,6 +74,9 @@ const Box = ({
         onClick={handleClick}
         context={context}
         winningBox={winningBox}
+        imgNumber={selectedPiece}
+        goodBox={goodBox}
+        badBox={badBox}
     >
         {boxValue == '.' || (
             <ImgContainer
@@ -75,6 +99,7 @@ Box.propTypes = {
     enabled: PropTypes.bool,
     clickable: PropTypes.bool,
     selected: PropTypes.bool,
+    selectedPiece: PropTypes.number,
     winningBox: PropTypes.bool,
     badBox: PropTypes.bool,
     goodBox: PropTypes.bool,

@@ -37,6 +37,7 @@ const Grid = props => (
                             boxKey,
                             rowKey,
                         )}
+                        selectedPiece={props.selectedPiece}
                     />
                 ))}
             </RowContainer>
@@ -52,6 +53,7 @@ Grid.propTypes = {
     readOnly: PropTypes.bool,
     goodPlaces: PropTypes.array.isRequired,
     activeZone: PropTypes.bool,
+    selectedPiece: PropTypes.number,
 };
 
 export default Grid;
