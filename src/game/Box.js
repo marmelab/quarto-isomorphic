@@ -1,49 +1,62 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+import styled, { css, cx } from 'react-emotion';
 import Colors from '../ui/Colors';
+
+const winningBoxColorClass = css`
+    background-color: ${Colors.winningBox};
+`;
+
+const selectedColorClass = css`
+    background-color: ${Colors.selected};
+`;
+
+const badBoxColorClass = css`
+    background-color: ${Colors.badBox};
+`;
+
+const goodBoxColorClass = css`
+    background-color: ${Colors.goodBox};
+`;
+
+const hoverUpperClass = css`
+    &:hover {
+        top: -10px;
+    }
+`;
+
+const hoverImageClass = imgNumber =>
+    css({
+        ':hover': {
+            backgroundImage:
+                imgNumber > 0
+                    ? `url("/static/pieceImage${imgNumber}.png");`
+                    : '',
+        },
+    });
+
+const clickableClass = css`
+    &:hover {
+        cursor: pointer;
+        background: ${Colors.buttonHover};
+        boxshadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.3);
+        position: relative;
+
+        transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+
+        background-size: contain;
+    }
+`;
 
 const BoxContainer = styled('div')(
     {
         padding: '2px',
         margin: '2px',
+        backgroundColor: Colors.boxBlue,
     },
-    ({
-        boxSize,
-        winningBox,
-        selected,
-        clickable,
-        context,
-        imgNumber,
-        badBox,
-        goodBox,
-    }) => ({
+    ({ boxSize }) => ({
         height: boxSize,
         width: boxSize,
-        backgroundColor: winningBox
-            ? Colors.winningBox
-            : selected
-                ? Colors.selected
-                : badBox && clickable
-                    ? Colors.badBox
-                    : goodBox && clickable
-                        ? Colors.goodBox
-                        : Colors.boxBlue,
-        ':hover': clickable
-            ? {
-                  cursor: 'pointer',
-                  background: Colors.buttonHover,
-                  boxShadow: '2px 2px 2px 0 rgba(0, 0, 0, 0.3)',
-                  position: 'relative',
-                  top: context !== 'grid' ? '-10px' : '',
-                  transition: 'all 200ms cubic-bezier(0.42, 0, 0.58, 1)',
-                  backgroundImage:
-                      imgNumber > 0
-                          ? `url("/static/pieceImage${imgNumber}.png");`
-                          : '',
-                  backgroundSize: 'contain',
-              }
-            : {},
     }),
 );
 
@@ -69,14 +82,16 @@ const Box = ({
         aria-label={label}
         aria-required="true"
         boxSize={boxSize}
-        selected={selected}
-        clickable={clickable}
         onClick={handleClick}
-        context={context}
-        winningBox={winningBox}
-        imgNumber={selectedPiece}
-        goodBox={goodBox}
-        badBox={badBox}
+        className={cx(
+            { [goodBoxColorClass]: goodBox && clickable },
+            { [badBoxColorClass]: badBox && clickable },
+            { [selectedColorClass]: selected },
+            { [winningBoxColorClass]: winningBox },
+            { [clickableClass]: clickable },
+            { [hoverImageClass(selectedPiece)]: context === 'grid' },
+            { [hoverUpperClass]: context !== 'grid' },
+        )}
     >
         {boxValue == '.' || (
             <ImgContainer
