@@ -65,6 +65,13 @@ const ImgContainer = styled('img')`
     height: auto;
 `;
 
+const defineToolTip = (badBox, goodBox, clickable) => {
+    if (badBox && clickable)
+        return 'Warning, this choice risk to make you loose';
+    if (goodBox && clickable) return 'Choose this and you win';
+    return;
+};
+
 const Box = ({
     label,
     boxSize,
@@ -96,7 +103,8 @@ const Box = ({
         {boxValue == '.' || (
             <ImgContainer
                 src={'/static/pieceImage' + String(boxValue) + '.png'}
-                alt={String(clickable)}
+                alt={defineToolTip(badBox, goodBox, clickable)}
+                title={defineToolTip(badBox, goodBox, clickable)}
             />
         )}
     </BoxContainer>
