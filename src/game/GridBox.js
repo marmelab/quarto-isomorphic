@@ -14,6 +14,7 @@ const GridBox = props => {
         token,
         winningBox,
         goodPlace,
+        selectedPiece,
     } = props;
     const handleClick = async () => {
         if (
@@ -38,6 +39,7 @@ const GridBox = props => {
             boxSize="60"
             handleClick={handleClick}
             context="grid"
+            selectedPiece={selectedPiece}
         />
     );
 };
@@ -56,6 +58,7 @@ GridBox.propTypes = {
     clickable: PropTypes.bool,
     winningBox: PropTypes.bool.isRequired,
     goodPlace: PropTypes.bool,
+    selectedPiece: PropTypes.number,
 };
 
 export default GridBox;

@@ -95,6 +95,7 @@ class Game extends Component {
                                 winningLine={game.winningLine}
                                 readOnly={game.locked}
                                 activeZone={game.selectedPiece > 0}
+                                selectedPiece={game.selectedPiece}
                             />
                             <ActionText
                                 closed={game.closed}

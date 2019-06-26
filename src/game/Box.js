@@ -1,31 +1,62 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+import styled, { css, cx } from 'react-emotion';
 import Colors from '../ui/Colors';
+
+const winningBoxColorClass = css`
+    background-color: ${Colors.winningBox};
+`;
+
+const selectedColorClass = css`
+    background-color: ${Colors.selected};
+`;
+
+const badBoxColorClass = css`
+    background-color: ${Colors.badBox};
+`;
+
+const goodBoxColorClass = css`
+    background-color: ${Colors.goodBox};
+`;
+
+const hoverUpperClass = css`
+    &:hover {
+        top: -10px;
+    }
+`;
+
+const hoverImageClass = imgNumber =>
+    css({
+        ':hover': {
+            backgroundImage:
+                imgNumber > 0
+                    ? `url("/static/pieceImage${imgNumber}.png");`
+                    : '',
+        },
+    });
+
+const clickableClass = css`
+    &:hover {
+        cursor: pointer;
+        background: ${Colors.buttonHover};
+        boxshadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.3);
+        position: relative;
+
+        transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+
+        background-size: contain;
+    }
+`;
 
 const BoxContainer = styled('div')(
     {
         padding: '2px',
         margin: '2px',
+        backgroundColor: Colors.boxBlue,
     },
-    ({ boxSize, winningBox, selected, clickable, context }) => ({
+    ({ boxSize }) => ({
         height: boxSize,
         width: boxSize,
-        backgroundColor: winningBox
-            ? Colors.winningBox
-            : selected
-                ? Colors.selected
-                : Colors.boxBlue,
-        ':hover': clickable
-            ? {
-                  cursor: 'pointer',
-                  background: Colors.buttonHover,
-                  boxShadow: '2px 2px 2px 0 rgba(0, 0, 0, 0.3)',
-                  position: 'relative',
-                  top: context !== 'grid' ? '-10px' : '',
-                  transition: 'all 200ms cubic-bezier(0.42, 0, 0.58, 1)',
-              }
-            : {},
     }),
 );
 
@@ -34,30 +65,46 @@ const ImgContainer = styled('img')`
     height: auto;
 `;
 
+const defineToolTip = (badBox, goodBox, clickable) => {
+    if (badBox && clickable)
+        return 'Warning, this choice risk to make you loose';
+    if (goodBox && clickable) return 'Choose this and you win';
+    return;
+};
+
 const Box = ({
     label,
     boxSize,
     boxValue,
     selected,
+    selectedPiece,
     clickable,
     handleClick,
     context,
     winningBox,
+    goodBox,
+    badBox,
 }) => (
     <BoxContainer
         aria-label={label}
         aria-required="true"
         boxSize={boxSize}
-        selected={selected}
-        clickable={clickable}
         onClick={handleClick}
-        context={context}
-        winningBox={winningBox}
+        className={cx(
+            { [goodBoxColorClass]: goodBox && clickable },
+            { [badBoxColorClass]: badBox && clickable },
+            { [selectedColorClass]: selected },
+            { [winningBoxColorClass]: winningBox },
+            { [clickableClass]: clickable },
+            { [hoverImageClass(selectedPiece)]: context === 'grid' },
+            { [hoverUpperClass]: context !== 'grid' },
+        )}
     >
         {boxValue == '.' || (
             <ImgContainer
                 src={'/static/pieceImage' + String(boxValue) + '.png'}
-                alt={String(clickable)}
+                alt={defineToolTip(badBox, goodBox, clickable)}
+                title={defineToolTip(badBox, goodBox, clickable)}
             />
         )}
     </BoxContainer>
@@ -75,6 +122,7 @@ Box.propTypes = {
     enabled: PropTypes.bool,
     clickable: PropTypes.bool,
     selected: PropTypes.bool,
+    selectedPiece: PropTypes.number,
     winningBox: PropTypes.bool,
     badBox: PropTypes.bool,
     goodBox: PropTypes.bool,
